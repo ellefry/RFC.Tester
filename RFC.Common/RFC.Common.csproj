@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+		<Platforms>AnyCPU;x86</Platforms>
+	</PropertyGroup>
+	<ItemGroup>
+		<Reference Include="Microsoft.CSharp" />
+		<Reference Include="sapnco">
+	    <HintPath>..\..\SAPRFC1\DDL\sapnco.dll</HintPath>
+	    <CopyLocal>True</CopyLocal>
+	    <Private>true</Private>
+	  </Reference>
+	  <Reference Include="sapnco_utils">
+	    <HintPath>..\..\SAPRFC1\DDL\sapnco_utils.dll</HintPath>
+	    <CopyLocal>True</CopyLocal>
+	    <Private>true</Private>
+	  </Reference>
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Properties\" />
+	</ItemGroup>
+</Project>

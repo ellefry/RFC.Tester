@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "RFC.Connector.Web": {
+      "commandName": "Executable",
+      "launchBrowser": true,
+      "executablePath": "C:\\Program Files (x86)\\IIS Express\\iisexpress.exe",
+      "commandLineArgs": " /path:\"$(SolutionDir)$(ProjectName)\" /port:12345"
+    }
+  }
+}

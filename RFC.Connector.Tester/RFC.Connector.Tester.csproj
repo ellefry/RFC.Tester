@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net48</TargetFramework>
+		<UseWindowsForms>true</UseWindowsForms>
+		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+		<Platforms>AnyCPU;x86</Platforms>
+	</PropertyGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\RFC.Common\RFC.Common.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Reference Include="sapnco">
+	    <HintPath>..\..\SAPRFC1\DDL\sapnco.dll</HintPath>
+	  </Reference>
+	  <Reference Include="sapnco_utils">
+	    <HintPath>..\..\SAPRFC1\DDL\sapnco_utils.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
+</Project>
