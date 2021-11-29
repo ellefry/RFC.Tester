@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RFC.Common
+namespace RFC.Common.Interfaces
 {
   public interface IRfcManager
   {

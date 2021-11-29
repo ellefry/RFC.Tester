@@ -6,8 +6,8 @@ namespace RFC.Common
     public class RfcParameter
     {
         public string StructureName { get; set; }
-        public RFCParameterType ParameterType { get; set; } = RFCParameterType.Structure;
         public List<RfcStructureData> Data { get; set; } = new List<RfcStructureData>();
+        public List<List<RfcStructureData>> TableData { get; set; } = new List<List<RfcStructureData>>();
     }
 
     public class RfcStructureData
@@ -16,10 +16,4 @@ namespace RFC.Common
         public dynamic Value { get; set; }
     }
 
-
-    public enum RFCParameterType
-    {
-        Structure,
-        Table
-    }
 }

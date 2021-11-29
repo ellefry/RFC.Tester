@@ -10,6 +10,50 @@ namespace RFC.Common
 {
     public static class IRfcTableExtension
     {
+        public static List<List<RfcStructureData>> ToRfcStructureData(this IRfcTable sapTable)
+        {
+            var result = new List<List<RfcStructureData>>();
+
+            foreach (IRfcStructure row in sapTable)
+            {
+                var items = new List<RfcStructureData>();
+                for (int liElement = 0; liElement < sapTable.ElementCount; liElement++)
+                {
+                    RfcElementMetadata metadata = sapTable.GetElementMetadata(liElement);
+                    switch (metadata.DataType)
+                    {
+                        case RfcDataType.DATE:
+                            items.Add(new RfcStructureData { Key = string.Intern(metadata.Name), Value = 
+                                row.GetString(metadata.Name).Substring(0, 4) + row.GetString(metadata.Name).Substring(5, 2) + row.GetString(metadata.Name).Substring(8, 2) });
+                            break;
+                        case RfcDataType.BCD:
+                            items.Add(new RfcStructureData { Key = string.Intern(metadata.Name), Value = row.GetDecimal(metadata.Name) });
+                            break;
+                        case RfcDataType.CHAR:
+                            items.Add(new RfcStructureData { Key=string.Intern(metadata.Name), Value = row.GetString(metadata.Name) });
+                            break;
+                        case RfcDataType.STRING:
+                            items.Add(new RfcStructureData { Key=string.Intern(metadata.Name), Value = row.GetString(metadata.Name) });
+                            break;
+                        case RfcDataType.INT2:
+                            items.Add(new RfcStructureData { Key=string.Intern(metadata.Name), Value = row.GetInt(metadata.Name) });
+                            break;
+                        case RfcDataType.INT4:
+                            items.Add(new RfcStructureData { Key=string.Intern(metadata.Name), Value = row.GetInt(metadata.Name) });
+                            break;
+                        case RfcDataType.FLOAT:
+                            items.Add(new RfcStructureData { Key=string.Intern(metadata.Name), Value = row.GetDouble(metadata.Name) });
+                            break;
+                        default:
+                            items.Add(new RfcStructureData { Key=string.Intern(metadata.Name), Value = row.GetString(metadata.Name) });
+                            break;
+                    }
+                }
+                result.Add(items);
+            }
+            return result;
+        }
+
         public static DataTable ToDataTable(this IRfcTable sapTable, string name)
         {
             DataTable adoTable = new DataTable(name);
