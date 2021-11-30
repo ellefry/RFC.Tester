@@ -5,7 +5,7 @@ namespace RFC.Common.Interfaces
 {
     public interface IRfcRepositoryCreator : IDisposable
     {
-        RfcRepository Create(string destinationName);
+        RfcRepoWrapper Create(string destinationName);
         RfcDestination Destination { get; }
     }
 }

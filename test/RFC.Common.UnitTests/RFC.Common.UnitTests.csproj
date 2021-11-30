@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoFixture.AutoMoq" Version="4.17.0" />
+    <PackageReference Include="AutoFixture.NUnit3" Version="4.17.0" />
+    <PackageReference Include="NUnit" Version="3.12.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.16.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+		<PackageReference Include="Newtonsoft.Json" version="12.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\RFC.Common\RFC.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="rscp4n">
+      <HintPath>..\..\SAPRFC1\DDL\rscp4n.dll</HintPath>
+    </Reference>
+    <Reference Include="sapnco">
+      <HintPath>..\..\SAPRFC1\DDL\sapnco.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

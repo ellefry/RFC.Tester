@@ -13,7 +13,7 @@ namespace RFC.Common
     public class RfcStructureData
     {
         public string Key { get; set; }
-        public dynamic Value { get; set; }
+        public object Value { get; set; }
     }
 
 }

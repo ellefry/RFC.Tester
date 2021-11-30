@@ -22,13 +22,13 @@ namespace RFC.Common
 
         public void ProcessRequest(string destinationName, string rfcFunctionName,
             RfcParameter functionParam, RfcParameter headerParam, RfcParameter tableParams,
-           ref RfcParameter returnHeaders, ref RfcParameter returnStructure, ref RfcParameter returnTable
+            RfcParameter returnHeaders, RfcParameter returnStructure, RfcParameter returnTable
         )
         {
             using (_rfcRepositoryCreator)
             {
-                var repo = _rfcRepositoryCreator.Create(destinationName);
-                var function = _rfcFunctionCreator.Create(rfcFunctionName, repo);
+                var repoWrapper = _rfcRepositoryCreator.Create(destinationName);
+                var function = _rfcFunctionCreator.Create(rfcFunctionName, repoWrapper.RfcRepository);
 
                 FormatInputParameters(function, functionParam, headerParam, tableParams);
                 //invoke

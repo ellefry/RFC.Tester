@@ -10,7 +10,7 @@ namespace RFC.Common.Interfaces
   {
         void ProcessRequest(string destinationName, string rfcFunctionName,
             RfcParameter functionParam, RfcParameter headerParam, RfcParameter tableParams,
-           ref RfcParameter returnHeaders, ref RfcParameter returnStructure, ref RfcParameter returnTable
+            RfcParameter returnHeaders, RfcParameter returnStructure, RfcParameter returnTable
         );
   }
 }

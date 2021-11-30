@@ -10,6 +10,8 @@ namespace RFC.Common
 
         private ECCDestinationConfig cfg;
 
+        public RfcRepoWrapper RfcRepoWrapper { get; set; }
+
         public RfcRepositoryCreator(SapConnectionConfig sapConnectionConfig)
         {
             this._sapConnectionConfig = sapConnectionConfig;
@@ -17,14 +19,14 @@ namespace RFC.Common
 
         public RfcDestination Destination { get; private set; }
 
-        public RfcRepository Create(string destinationName)
+        public RfcRepoWrapper Create(string destinationName)
         {
             cfg = new ECCDestinationConfig(this._sapConnectionConfig);
             RfcDestinationManager.RegisterDestinationConfiguration(cfg);
             Destination = RfcDestinationManager.GetDestination(destinationName);
 
             var repo = Destination.Repository;
-            return repo;
+            return RfcRepoWrapper.Create(repo);
         }
 
         public void Dispose()
@@ -33,6 +35,18 @@ namespace RFC.Common
                 RfcSessionManager.EndContext(Destination);
             if (cfg !=null)
                 RfcDestinationManager.UnregisterDestinationConfiguration(cfg);
+        }
+    }
+
+    public class RfcRepoWrapper
+    {
+        public RfcRepository RfcRepository { get; set; }
+
+        public static RfcRepoWrapper Create(RfcRepository rfcRepository)
+        {
+            return new RfcRepoWrapper {
+                RfcRepository = rfcRepository
+            };
         }
     }
 }
