@@ -25,24 +25,18 @@ namespace RFC.Common
            ref RfcParameter returnHeaders, ref RfcParameter returnStructure, ref RfcParameter returnTable
         )
         {
-            try
+            using (_rfcRepositoryCreator)
             {
-                using (_rfcRepositoryCreator)
-                {
-                    var repo = _rfcRepositoryCreator.Create(destinationName);
-                    var function = _rfcFunctionCreator.Create(rfcFunctionName, repo);
+                var repo = _rfcRepositoryCreator.Create(destinationName);
+                var function = _rfcFunctionCreator.Create(rfcFunctionName, repo);
 
-                    FormatInputParameters(function, functionParam, headerParam, tableParams);
-                    //invoke
-                    function.Invoke(_rfcRepositoryCreator.Destination);
+                FormatInputParameters(function, functionParam, headerParam, tableParams);
+                //invoke
+                function.Invoke(_rfcRepositoryCreator.Destination);
 
-                    FormatReturnResult(function, ref returnHeaders, ref returnStructure, ref returnTable);
-                }
-                
+                FormatReturnResult(function, ref returnHeaders, ref returnStructure, ref returnTable);
             }
-            catch (Exception ex)
-            {
-            }
+
         }
 
         /// <summary>
