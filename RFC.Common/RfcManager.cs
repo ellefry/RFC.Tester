@@ -9,7 +9,7 @@ using SAP.Middleware.Connector;
 
 namespace RFC.Common
 {
-    public class RfcManager
+    public class RfcManager : IRfcManager
     {
         private readonly IRfcRepositoryCreator _rfcRepositoryCreator;
         private readonly IRfcFunctionCreator _rfcFunctionCreator;
@@ -30,7 +30,7 @@ namespace RFC.Common
                 using (_rfcRepositoryCreator)
                 {
                     var repo = _rfcRepositoryCreator.Create(destinationName);
-                    var function = repo.CreateFunction(rfcFunctionName);
+                    var function = _rfcFunctionCreator.Create(rfcFunctionName, repo);
 
                     FormatInputParameters(function, functionParam, headerParam, tableParams);
                     //invoke
