@@ -34,7 +34,7 @@ namespace RFC.Common.UnitTests
                 .Callback((string key, object value)=> headerValidateResult.Add(new RfcStructureData { 
                     Key = key, Value = value
                 }));
-            var invokeCount = 0;
+            var invokeCount = 0; 
             functionCreatorMock.Setup(r => r.Execute(functionMock.Object, It.IsAny<RfcDestination>()))
                .Returns(true)
                .Callback(() => invokeCount++);
