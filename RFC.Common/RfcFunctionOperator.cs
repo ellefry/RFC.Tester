@@ -4,7 +4,7 @@ using System;
 
 namespace RFC.Common
 {
-    public class RfcFunctionCreator : IRfcFunctionCreator
+    public class RfcFunctionOperator : IRfcFunctionOperator
     {
         public IRfcFunction Create(string functionName, RfcRepository repo)
         {
@@ -12,5 +12,11 @@ namespace RFC.Common
             return function;
         }
 
+        public bool Execute(IRfcFunction function, RfcDestination rfcDestination)
+        {
+            function.Invoke(rfcDestination);
+            return true;
+        }
     }
+
 }

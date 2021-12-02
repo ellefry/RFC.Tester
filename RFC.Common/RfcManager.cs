@@ -12,9 +12,9 @@ namespace RFC.Common
     public class RfcManager : IRfcManager
     {
         private readonly IRfcRepositoryCreator _rfcRepositoryCreator;
-        private readonly IRfcFunctionCreator _rfcFunctionCreator;
+        private readonly IRfcFunctionOperator _rfcFunctionCreator;
 
-        public RfcManager(IRfcRepositoryCreator rfcRepositoryCreator, IRfcFunctionCreator rfcFunctionCreator)
+        public RfcManager(IRfcRepositoryCreator rfcRepositoryCreator, IRfcFunctionOperator rfcFunctionCreator)
         {
             _rfcRepositoryCreator = rfcRepositoryCreator;
             _rfcFunctionCreator = rfcFunctionCreator;
@@ -32,7 +32,7 @@ namespace RFC.Common
 
                 FormatInputParameters(function, functionParam, headerParam, tableParams);
                 //invoke
-                function.Invoke(_rfcRepositoryCreator.Destination);
+                _rfcFunctionCreator.Execute(function, _rfcRepositoryCreator.Destination);
 
                 FormatReturnResult(function, ref returnHeaders, ref returnStructure, ref returnTable);
             }

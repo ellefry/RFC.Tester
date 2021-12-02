@@ -21,11 +21,24 @@ namespace RFC.Common.UnitTests
         [Test]
         [AutoDomainData]
         public void Given_InputHeader_When_CallingProcessRequest_ThenReturnHeaderAndStructure(
-            [Frozen]Mock<IRfcRepositoryCreator> repoCreatorMock,[Frozen]Mock<IRfcFunctionCreator> functionCreatorMock,
-            ProcessRequestInput input, IRfcFunction function, RfcManager rfcManager)
+            [Frozen]Mock<IRfcRepositoryCreator> repoCreatorMock,[Frozen]Mock<IRfcFunctionOperator> functionCreatorMock,
+            ProcessRequestInput input, [Frozen]Mock<IRfcFunction> functionMock, RfcManager rfcManager)
         {
+            
             repoCreatorMock.Setup(r=>r.Create(It.IsAny<string>())).Returns(new RfcRepoWrapper());
-            functionCreatorMock.Setup(f=>f.Create(It.IsAny<string>(), It.IsAny<RfcRepository>())).Returns(function);
+           
+            functionCreatorMock.Setup(f=>f.Create(It.IsAny<string>(), It.IsAny<RfcRepository>())).Returns(functionMock.Object);
+
+            var headerValidateResult = new List<RfcStructureData>(); 
+            functionMock.Setup(f => f.SetValue(It.IsAny<string>(), It.IsAny<object>()))
+                .Callback((string key, object value)=> headerValidateResult.Add(new RfcStructureData { 
+                    Key = key, Value = value
+                }));
+            var invokeCount = 0;
+            functionCreatorMock.Setup(r => r.Execute(functionMock.Object, It.IsAny<RfcDestination>()))
+               .Returns(true)
+               .Callback(() => invokeCount++);
+
 
             input.functionParam = new RfcParameter {
                 Data = new List<RfcStructureData> {
@@ -47,10 +60,12 @@ namespace RFC.Common.UnitTests
 
             input.tableParams.StructureName = string.Empty;
 
-            input.returnHeaders = new RfcParameter {
+            input.returnHeaders = new RfcParameter
+            {
                 StructureName = "EX_HEADER",
             };
-            input.returnStructure = new RfcParameter { 
+            input.returnStructure = new RfcParameter
+            {
                 StructureName = "EX_RETURN"
             };
             input.returnTable = new RfcParameter
@@ -63,7 +78,7 @@ namespace RFC.Common.UnitTests
             input.functionParam, input.headerParam, input.tableParams,
             input.returnHeaders, input.returnStructure, input.returnTable);
 
-
+            
         }
     }
 }
