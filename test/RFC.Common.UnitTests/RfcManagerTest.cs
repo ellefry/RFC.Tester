@@ -22,20 +22,20 @@ namespace RFC.Common.UnitTests
         [AutoDomainData]
         public void Given_InputHeader_When_CallingProcessRequest_ThenReturnHeaderAndStructure(
             [Frozen]Mock<IRfcRepositoryCreator> repoCreatorMock,[Frozen]Mock<IRfcFunctionOperator> functionOperatorMock,
-            ProcessRequestInput input, [Frozen]Mock<IRfcFunction> functionMock, IRfcStructure returnHeaderStructure,
+            ProcessRequestInput input, [Frozen]Mock<IRfcFunction> functionMock, 
+            [Frozen] Mock<IRfcStructure> returnHeaderStructureMock,
             RfcManager rfcManager)
         {
             repoCreatorMock.Setup(r=>r.Create(It.IsAny<string>())).Returns(new RfcRepoWrapper());
            
-            
-
             var headerValidateResult = new List<RfcStructureData>(); 
             functionMock.Setup(f => f.SetValue(It.IsAny<string>(), It.IsAny<object>()))
                 .Callback((string key, object value)=> headerValidateResult.Add(new RfcStructureData { 
                     Key = key, Value = value
                 }));
 
-            functionMock.Setup(f => f.GetStructure("EX_HEADER")).Returns(returnHeaderStructure);
+            //returnHeaderStructureMock.Setup(f=>f.ElementCount).Returns(1);
+            functionMock.Setup(f => f.GetStructure("EX_HEADER")).Returns(returnHeaderStructureMock.Object);
 
             var invokeCount = 0; 
             functionOperatorMock.Setup(r => r.Execute(functionMock.Object, It.IsAny<RfcRepoWrapper>()))
