@@ -12,9 +12,9 @@ namespace RFC.Common
             return function;
         }
 
-        public bool Execute(IRfcFunction function, RfcDestination rfcDestination)
+        public bool Execute(IRfcFunction function, RfcRepoWrapper repoWrapper)
         {
-            function.Invoke(rfcDestination);
+            function.Invoke(repoWrapper.Destination);
             return true;
         }
     }

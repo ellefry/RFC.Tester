@@ -21,24 +21,30 @@ namespace RFC.Common.UnitTests
         [Test]
         [AutoDomainData]
         public void Given_InputHeader_When_CallingProcessRequest_ThenReturnHeaderAndStructure(
-            [Frozen]Mock<IRfcRepositoryCreator> repoCreatorMock,[Frozen]Mock<IRfcFunctionOperator> functionCreatorMock,
-            ProcessRequestInput input, [Frozen]Mock<IRfcFunction> functionMock, RfcManager rfcManager)
+            [Frozen]Mock<IRfcRepositoryCreator> repoCreatorMock,[Frozen]Mock<IRfcFunctionOperator> functionOperatorMock,
+            ProcessRequestInput input, [Frozen]Mock<IRfcFunction> functionMock, IRfcStructure returnHeaderStructure,
+            RfcManager rfcManager)
         {
-            
             repoCreatorMock.Setup(r=>r.Create(It.IsAny<string>())).Returns(new RfcRepoWrapper());
            
-            functionCreatorMock.Setup(f=>f.Create(It.IsAny<string>(), It.IsAny<RfcRepository>())).Returns(functionMock.Object);
+            
 
             var headerValidateResult = new List<RfcStructureData>(); 
             functionMock.Setup(f => f.SetValue(It.IsAny<string>(), It.IsAny<object>()))
                 .Callback((string key, object value)=> headerValidateResult.Add(new RfcStructureData { 
                     Key = key, Value = value
                 }));
+
+            functionMock.Setup(f => f.GetStructure("EX_HEADER")).Returns(returnHeaderStructure);
+
             var invokeCount = 0; 
-            functionCreatorMock.Setup(r => r.Execute(functionMock.Object, It.IsAny<RfcDestination>()))
+            functionOperatorMock.Setup(r => r.Execute(functionMock.Object, It.IsAny<RfcRepoWrapper>()))
                .Returns(true)
                .Callback(() => invokeCount++);
 
+            functionOperatorMock.Setup(f => f.Create(It.IsAny<string>(), It.IsAny<RfcRepository>())).Returns(functionMock.Object);
+
+           
 
             input.functionParam = new RfcParameter {
                 Data = new List<RfcStructureData> {

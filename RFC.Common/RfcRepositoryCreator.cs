@@ -26,7 +26,7 @@ namespace RFC.Common
             Destination = RfcDestinationManager.GetDestination(destinationName);
 
             var repo = Destination.Repository;
-            return RfcRepoWrapper.Create(repo);
+            return RfcRepoWrapper.Create(repo, Destination);
         }
 
         public void Dispose()
@@ -42,10 +42,13 @@ namespace RFC.Common
     {
         public RfcRepository RfcRepository { get; set; }
 
-        public static RfcRepoWrapper Create(RfcRepository rfcRepository)
+        public RfcDestination Destination { get; set; }
+
+        public static RfcRepoWrapper Create(RfcRepository rfcRepository, RfcDestination destination)
         {
             return new RfcRepoWrapper {
-                RfcRepository = rfcRepository
+                RfcRepository = rfcRepository,
+                Destination = destination
             };
         }
     }

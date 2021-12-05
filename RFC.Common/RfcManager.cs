@@ -32,9 +32,9 @@ namespace RFC.Common
 
                 FormatInputParameters(function, functionParam, headerParam, tableParams);
                 //invoke
-                _rfcFunctionCreator.Execute(function, _rfcRepositoryCreator.Destination);
+                _rfcFunctionCreator.Execute(function, repoWrapper);
 
-                FormatReturnResult(function, ref returnHeaders, ref returnStructure, ref returnTable);
+                FormatReturnResult(function, returnHeaders, returnStructure, returnTable);
             }
 
         }
@@ -86,7 +86,7 @@ namespace RFC.Common
         /// <param name="returnHeaders"></param>
         /// <param name="returnStructure"></param>
         /// <param name="returnTable"></param>
-        private void FormatReturnResult(IRfcFunction function, ref RfcParameter returnHeaders, ref RfcParameter returnStructure, ref RfcParameter returnTable)
+        private void FormatReturnResult(IRfcFunction function, RfcParameter returnHeaders, RfcParameter returnStructure, RfcParameter returnTable)
         {
             //return headers
             if (!string.IsNullOrEmpty(returnHeaders.StructureName))
