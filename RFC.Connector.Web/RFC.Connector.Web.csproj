@@ -35,13 +35,11 @@
 
   <ItemGroup>
 		<Reference Include="Microsoft.CSharp" />
-		<Reference Include="sapnco">
-		  <HintPath>..\..\SAPRFC1\DDL\sapnco.dll</HintPath>
-		  <CopyLocal>True</CopyLocal>
+		<Reference Include="rscp4n">
+		  <HintPath>..\SAPRFC1\DDL\rscp4n.dll</HintPath>
 		</Reference>
-		<Reference Include="sapnco_utils">
-		  <HintPath>..\..\SAPRFC1\DDL\sapnco_utils.dll</HintPath>
-		  <CopyLocal>True</CopyLocal>
+		<Reference Include="sapnco">
+		  <HintPath>..\SAPRFC1\DDL\sapnco.dll</HintPath>
 		</Reference>
 		<Reference Include="System.Configuration" />
 		<Reference Include="System.Web" />

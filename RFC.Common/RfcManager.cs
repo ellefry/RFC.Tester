@@ -36,7 +36,6 @@ namespace RFC.Common
 
                 FormatReturnResult(function, returnHeaders, returnStructure, returnTable);
             }
-
         }
 
         /// <summary>
