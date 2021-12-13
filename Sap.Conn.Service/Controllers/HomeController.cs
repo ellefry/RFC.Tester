@@ -14,8 +14,8 @@ namespace Sap.Conn.Service.Controllers
         {
             using (var db = new SapConnectorContext())
             {
-                db.Set<ProcessRequest>().Add(new ProcessRequest { FunctionType = 0});
-                db.SaveChanges();
+                //db.Set<ProcessRequest>().Add(new ProcessRequest { FunctionType = 0});
+                //db.SaveChanges();
             }
             return View();
         }
