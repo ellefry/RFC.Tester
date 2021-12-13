@@ -29,6 +29,7 @@ namespace Sap.Conn.Service
 
             // Let's also create a sample background job
             BackgroundJob.Enqueue(() => Debug.WriteLine("Hello world from Hangfire!"));
+            RecurringJob.AddOrUpdate("powerfuljob", () => Debug.Write($"test {Environment.NewLine}"), "0/5 * * * * ?");
         }
 
         private IEnumerable<IDisposable> GetHangfireServers()
