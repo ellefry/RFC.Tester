@@ -23,15 +23,23 @@ namespace Sap.Conn.Service.Controllers
         [HttpGet]
         public async Task Failures()
         {
-            _rfcmanager.ProcessRequest(new ProcessRequestInput());
+            //_rfcmanager.ProcessRequest(new ProcessRequestInput());
             await Task.CompletedTask;
         }
 
         [HttpPost]
         public async Task ProcessRequest(ProcessRequestInput input)
         {
-            _rfcmanager.ProcessRequest(input);
-            await Task.CompletedTask;
+            try
+            {
+                _rfcmanager.ProcessRequest(input);
+                await Task.CompletedTask;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

@@ -191,6 +191,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppServices\Interfaces\IProcessRequestAppService.cs" />
+    <Compile Include="AppServices\ProcessRequestAppService.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IocContainerBuilder.cs" />
@@ -201,6 +203,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="DataStorage\SapConnectorContext.cs" />
     <Compile Include="Domains\ProcessRequest.cs" />
+    <Compile Include="Domains\ProcessRequestHistory.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
