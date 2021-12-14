@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
 		<Platforms>AnyCPU;x86</Platforms>
+		<Configurations>Debug;Release;Debug1</Configurations>
   </PropertyGroup>
 
   <PropertyGroup>

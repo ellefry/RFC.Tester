@@ -13,6 +13,7 @@ using System.Web.Routing;
 using System.Diagnostics;
 using Hangfire.Common;
 using Sap.Conn.Service.BackgroudServices;
+using Sap.Conn.Service.App_Start;
 
 namespace Sap.Conn.Service
 {
@@ -22,15 +23,13 @@ namespace Sap.Conn.Service
         {
             AreaRegistration.RegisterAllAreas();
             System.Web.Http.GlobalConfiguration.Configure(WebApiConfig.Register);
-
+            IocContainerBuilder.Build();
             HangfireAspNet.Use(GetHangfireServers);
 
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            // Let's also create a sample background job
-            BackgroundJob.Enqueue(() => Debug.WriteLine("Hello world from Hangfire!"));
             //RecurringJob.AddOrUpdate("powerfuljob", () => PowerfulJob(), "0/5 * * * * ?");
             RecurringJob.AddOrUpdate<SapFailureHandler>("SapFailureHandler", service => service.ProcessFailure(),
                 "0/5 * * * * ?");

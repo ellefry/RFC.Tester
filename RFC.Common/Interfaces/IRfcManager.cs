@@ -8,9 +8,6 @@ namespace RFC.Common.Interfaces
 {
   public interface IRfcManager
   {
-        void ProcessRequest(string destinationName, string rfcFunctionName,
-            RfcParameter functionParam, RfcParameter headerParam, RfcParameter tableParams,
-            RfcParameter returnHeaders, RfcParameter returnStructure, RfcParameter returnTable
-        );
+        void ProcessRequest(ProcessRequestInput input);
   }
 }

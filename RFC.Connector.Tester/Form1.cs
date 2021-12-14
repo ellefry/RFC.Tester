@@ -1,5 +1,5 @@
 ﻿using RFC.Common;
-using SAP.Middleware.Connector;
+//using SAP.Middleware.Connector;
 using System;
 using System.Windows.Forms;
 
@@ -33,30 +33,30 @@ namespace RFC.Connector.Tester
         {
             //var pi = new RfcStructureData("test", 10, typeof(int));
 
-            var sapConnectionConfig = LoadSapConfig();
-            IDestinationConfiguration eCCDestinationConfig = null;
-            RfcDestination rfcDestination = null;
+            //var sapConnectionConfig = LoadSapConfig();
+            //IDestinationConfiguration eCCDestinationConfig = null;
+            //RfcDestination rfcDestination = null;
 
-            try
-            {
-                eCCDestinationConfig = new ECCDestinationConfig(sapConnectionConfig);
-                RfcDestinationManager.RegisterDestinationConfiguration(eCCDestinationConfig);
-                rfcDestination = RfcDestinationManager.GetDestination("mySAPdestination");
+            //try
+            //{
+            //    eCCDestinationConfig = new ECCDestinationConfig(sapConnectionConfig);
+            //    RfcDestinationManager.RegisterDestinationConfiguration(eCCDestinationConfig);
+            //    rfcDestination = RfcDestinationManager.GetDestination("mySAPdestination");
 
-                var repo = rfcDestination.Repository;
+            //    var repo = rfcDestination.Repository;
 
-                MessageBox.Show("Repository returs!");
-                RfcSessionManager.EndContext(rfcDestination);
-                RfcDestinationManager.UnregisterDestinationConfiguration(eCCDestinationConfig);
-            }
-            catch (Exception ex)
-            {
-                if (rfcDestination != null)
-                    RfcSessionManager.EndContext(rfcDestination);
-                if (eCCDestinationConfig != null)
-                    RfcDestinationManager.UnregisterDestinationConfiguration(eCCDestinationConfig);
-                MessageBox.Show(ex.Message + Environment.NewLine + ex.StackTrace);
-            }
+            //    MessageBox.Show("Repository returs!");
+            //    RfcSessionManager.EndContext(rfcDestination);
+            //    RfcDestinationManager.UnregisterDestinationConfiguration(eCCDestinationConfig);
+            //}
+            //catch (Exception ex)
+            //{
+            //    if (rfcDestination != null)
+            //        RfcSessionManager.EndContext(rfcDestination);
+            //    if (eCCDestinationConfig != null)
+            //        RfcDestinationManager.UnregisterDestinationConfiguration(eCCDestinationConfig);
+            //    MessageBox.Show(ex.Message + Environment.NewLine + ex.StackTrace);
+            //}
         }
     }
 }

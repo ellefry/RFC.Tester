@@ -5,6 +5,7 @@
 		<UseWindowsForms>true</UseWindowsForms>
 		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
 		<Platforms>AnyCPU;x86</Platforms>
+		<Configurations>Debug;Release;Debug1</Configurations>
 	</PropertyGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\RFC.Common\RFC.Common.csproj" />

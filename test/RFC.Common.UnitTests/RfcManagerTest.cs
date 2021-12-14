@@ -80,9 +80,9 @@ namespace RFC.Common.UnitTests
             };
 
 
-            rfcManager.ProcessRequest(input.DestinationName, input.RfcFunctionName,
-            input.functionParam, input.headerParam, input.tableParams,
-            input.returnHeaders, input.returnStructure, input.returnTable);
+            //rfcManager.ProcessRequest(input.DestinationName, input.RfcFunctionName,
+            //input.functionParam, input.headerParam, input.tableParams,
+            //input.returnHeaders, input.returnStructure, input.returnTable);
 
             
         }

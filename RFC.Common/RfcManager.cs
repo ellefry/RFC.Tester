@@ -20,7 +20,14 @@ namespace RFC.Common
             _rfcFunctionCreator = rfcFunctionCreator;
         }
 
-        public void ProcessRequest(string destinationName, string rfcFunctionName,
+        public void ProcessRequest(ProcessRequestInput input)
+        {
+            ProcessRequest(input.DestinationName, input.RfcFunctionName,
+                input.functionParam, input.headerParam, input.tableParams,
+                input.returnHeaders, input.returnStructure, input.returnTable);
+        }
+
+        private void ProcessRequest(string destinationName, string rfcFunctionName,
             RfcParameter functionParam, RfcParameter headerParam, RfcParameter tableParams,
             RfcParameter returnHeaders, RfcParameter returnStructure, RfcParameter returnTable
         )
