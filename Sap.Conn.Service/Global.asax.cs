@@ -11,6 +11,8 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using System.Diagnostics;
+using Hangfire.Common;
+using Sap.Conn.Service.BackgroudServices;
 
 namespace Sap.Conn.Service
 {
@@ -29,7 +31,9 @@ namespace Sap.Conn.Service
 
             // Let's also create a sample background job
             BackgroundJob.Enqueue(() => Debug.WriteLine("Hello world from Hangfire!"));
-            RecurringJob.AddOrUpdate("powerfuljob", () => Debug.Write($"test {Environment.NewLine}"), "0/5 * * * * ?");
+            //RecurringJob.AddOrUpdate("powerfuljob", () => PowerfulJob(), "0/5 * * * * ?");
+            RecurringJob.AddOrUpdate<SapFailureHandler>("SapFailureHandler", service => service.ProcessFailure(),
+                "0/5 * * * * ?");
         }
 
         private IEnumerable<IDisposable> GetHangfireServers()
@@ -38,7 +42,8 @@ namespace Sap.Conn.Service
                 .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
                 .UseSimpleAssemblyNameTypeSerializer()
                 .UseRecommendedSerializerSettings()
-                .UseSqlServerStorage("Server=.\\SQLEXPRESS; Database=SapHangfire; Integrated Security=True;", new SqlServerStorageOptions
+                .UseSqlServerStorage("Server=.\\sql2019; Database=SapHangfire; User ID=sa;Password=123456;MultipleActiveResultSets=True;Encrypt=False;TrustServerCertificate=False;",
+                new SqlServerStorageOptions
                 {
                     CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
                     SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
