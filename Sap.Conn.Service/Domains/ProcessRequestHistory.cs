@@ -11,6 +11,5 @@ namespace Sap.Conn.Service.Domains
         public string FunctionName { get; set; }
         public string Content { get; set; }
         public DateTimeOffset? Created { get; set; }
-        public DateTimeOffset? Modified { get; set; }
     }
 }

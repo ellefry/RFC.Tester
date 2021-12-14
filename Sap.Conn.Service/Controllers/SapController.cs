@@ -1,45 +1,29 @@
 ﻿using RFC.Common;
-using RFC.Common.Interfaces;
-using Sap.Conn.Service.DataStorage;
-using Sap.Conn.Service.Domains;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Sap.Conn.Service.AppServices.Interfaces;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Sap.Conn.Service.Controllers
 {
     public class SapController : Controller
     {
-        private readonly IRfcManager _rfcmanager;
+        private readonly IProcessRequestAppService _processRequestAppService;
 
-        public SapController(IRfcManager rfcmanager)
+        public SapController(IProcessRequestAppService processRequestAppService)
         {
-            _rfcmanager = rfcmanager;
+            _processRequestAppService = processRequestAppService;
         }
 
         [HttpGet]
         public async Task Failures()
         {
-            //_rfcmanager.ProcessRequest(new ProcessRequestInput());
             await Task.CompletedTask;
         }
 
         [HttpPost]
-        public async Task ProcessRequest(ProcessRequestInput input)
+        public async Task ProcessSapRequest(ProcessRequestInput input)
         {
-            try
-            {
-                _rfcmanager.ProcessRequest(input);
-                await Task.CompletedTask;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+           await _processRequestAppService.ProcessSapRequest(input);
         }
     }
 }

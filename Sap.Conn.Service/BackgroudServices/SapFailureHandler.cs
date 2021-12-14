@@ -18,7 +18,6 @@ namespace Sap.Conn.Service.BackgroudServices
             ConnectionLock.Wait();
             try
             {
-                Thread.Sleep(20000);
                 using (var db = new SapConnectorContext())
                 {
                     db.Set<ProcessRequest>().Add(new ProcessRequest { Id = Guid.NewGuid(), FunctionType = 0 });

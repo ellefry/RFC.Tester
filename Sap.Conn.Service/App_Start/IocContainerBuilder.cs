@@ -2,6 +2,8 @@
 using Autofac.Integration.Mvc;
 using RFC.Common;
 using RFC.Common.Interfaces;
+using Sap.Conn.Service.AppServices;
+using Sap.Conn.Service.AppServices.Interfaces;
 using Sap.Conn.Service.DataStorage;
 using System;
 using System.Collections.Generic;
@@ -41,6 +43,9 @@ namespace Sap.Conn.Service.App_Start
             builder.RegisterType<RfcManager>().As<IRfcManager>().InstancePerLifetimeScope();
             builder.RegisterType<RfcRepositoryCreator>().As<IRfcRepositoryCreator>().InstancePerLifetimeScope();
             builder.RegisterType<RfcFunctionOperator>().As<IRfcFunctionOperator>().InstancePerLifetimeScope();
+
+            //Application Services
+            builder.RegisterType<ProcessRequestAppService>().As<IProcessRequestAppService>().InstancePerLifetimeScope();
 
             // Set the dependency resolver to be Autofac.
             var container = builder.Build();

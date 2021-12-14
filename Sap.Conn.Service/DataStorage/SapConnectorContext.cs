@@ -22,5 +22,6 @@ namespace Sap.Conn.Service.DataStorage
         }
 
         public DbSet<ProcessRequest> ProcessRequests { get; set; }
+        public DbSet<ProcessRequestHistory> ProcessRequestHistories { get; set; }
     }
 }
