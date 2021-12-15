@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Hangfire;
 using Sap.Conn.Service.App_Start;
 using Sap.Conn.Service.AppServices.Interfaces;
 using Sap.Conn.Service.DataStorage;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Web;
 
@@ -16,6 +18,7 @@ namespace Sap.Conn.Service.BackgroudServices
     {
         private static readonly SemaphoreSlim ConnectionLock = new SemaphoreSlim(initialCount: 1, maxCount: 1);
 
+        [AutomaticRetry(Attempts = 0, LogEvents = false, OnAttemptsExceeded = AttemptsExceededAction.Delete)]
         public void ProcessFailure()
         {
             ConnectionLock.Wait();

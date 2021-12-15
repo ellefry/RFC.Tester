@@ -48,7 +48,8 @@ namespace Sap.Conn.Service
                     SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
                     QueuePollInterval = TimeSpan.Zero,
                     UseRecommendedIsolationLevel = true,
-                    DisableGlobalLocks = true
+                    DisableGlobalLocks = true,
+                    
                 });
 
             yield return new BackgroundJobServer();

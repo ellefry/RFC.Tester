@@ -61,7 +61,6 @@ namespace Sap.Conn.Service.AppServices
                 pr.Error = ex.Message;
                 pr.Modified = DateTimeOffset.Now;
                 pr.Retries += 1;
-                _dbContext.ProcessRequests.Attach(pr);
                 _dbContext.Entry(pr).State = EntityState.Modified;
                 await _dbContext.SaveChangesAsync();
             }
