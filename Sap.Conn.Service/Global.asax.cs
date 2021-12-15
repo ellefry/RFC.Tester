@@ -32,7 +32,7 @@ namespace Sap.Conn.Service
 
             //RecurringJob.AddOrUpdate("powerfuljob", () => PowerfulJob(), "0/5 * * * * ?");
             RecurringJob.AddOrUpdate<SapFailureHandler>("SapFailureHandler", service => service.ProcessFailure(),
-                "0/5 * * * * ?");
+                "0/30 * * * * ?");
         }
 
         private IEnumerable<IDisposable> GetHangfireServers()
@@ -41,7 +41,7 @@ namespace Sap.Conn.Service
                 .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
                 .UseSimpleAssemblyNameTypeSerializer()
                 .UseRecommendedSerializerSettings()
-                .UseSqlServerStorage("Server=.\\sql2019; Database=SapHangfire; User ID=sa;Password=123456;MultipleActiveResultSets=True;Encrypt=False;TrustServerCertificate=False;",
+                .UseSqlServerStorage("Server=.\\sql2019; Database=SapHangfire1; User ID=sa;Password=123456;MultipleActiveResultSets=True;Encrypt=False;TrustServerCertificate=False;",
                 new SqlServerStorageOptions
                 {
                     CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),

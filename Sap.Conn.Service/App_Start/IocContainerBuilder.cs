@@ -19,6 +19,8 @@ namespace Sap.Conn.Service.App_Start
 {
     public class IocContainerBuilder
     {
+        public static IContainer IocContainer;
+
         public static void Build()
         {
             var builder = new ContainerBuilder();
@@ -52,9 +54,9 @@ namespace Sap.Conn.Service.App_Start
             builder.RegisterType<ProcessRequestAppService>().As<IProcessRequestAppService>().InstancePerLifetimeScope();
 
             // Set the dependency resolver to be Autofac.
-            var container = builder.Build();
-            GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver(container);
-            DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+            IocContainer = builder.Build();
+            GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver(IocContainer);
+            DependencyResolver.SetResolver(new AutofacDependencyResolver(IocContainer));
         }
 
         static SapConnectionConfig CreateSapConfiguration()

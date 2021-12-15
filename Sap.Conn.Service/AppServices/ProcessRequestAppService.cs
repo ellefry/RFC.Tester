@@ -33,12 +33,21 @@ namespace Sap.Conn.Service.AppServices
             }
             catch (Exception ex)
             {
-                await SaveFailedSapRequestLog(JsonConvert.SerializeObject(input), FunctionType.RFC, 
-                    input.RfcFunctionName, ex.Message);
+                await SaveFailedSapRequestLog(JsonConvert.SerializeObject(input), FunctionType.RFC,
+                    input.RfcFunctionName, $"{ex.GetType()} : {ex.Message}");
             }
         }
 
-        public async Task ProcessFailedSapRfcRequest(ProcessRequest processRequest)
+        public async Task ProcessFailedSapRfcRequest()
+        {
+            var failedRequests = _dbContext.ProcessRequests.ToList();
+            foreach (var failedRequest in failedRequests)
+            {
+                await ProcessFailedSapRfcRequest(failedRequest);
+            }
+        }
+
+        private async Task ProcessFailedSapRfcRequest(ProcessRequest processRequest)
         {
             try
             {
