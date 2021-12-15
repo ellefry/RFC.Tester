@@ -1,19 +1,12 @@
-using Hangfire.SqlServer;
 using Hangfire;
-using Sap.Conn.Service.DataStorage;
+using Hangfire.SqlServer;
+using Sap.Conn.Service.App_Start;
+using Sap.Conn.Service.BackgroudServices;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Web;
-using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using System.Diagnostics;
-using Hangfire.Common;
-using Sap.Conn.Service.BackgroudServices;
-using Sap.Conn.Service.App_Start;
 
 namespace Sap.Conn.Service
 {
@@ -49,7 +42,7 @@ namespace Sap.Conn.Service
                     QueuePollInterval = TimeSpan.Zero,
                     UseRecommendedIsolationLevel = true,
                     DisableGlobalLocks = true,
-                    
+
                 });
 
             yield return new BackgroundJobServer();

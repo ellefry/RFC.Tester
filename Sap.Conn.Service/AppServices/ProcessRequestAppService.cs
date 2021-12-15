@@ -1,15 +1,13 @@
-﻿using RFC.Common.Interfaces;
+﻿using Newtonsoft.Json;
+using RFC.Common;
+using RFC.Common.Interfaces;
 using Sap.Conn.Service.AppServices.Interfaces;
 using Sap.Conn.Service.DataStorage;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Threading.Tasks;
-using RFC.Common;
 using Sap.Conn.Service.Domains;
-using Newtonsoft.Json;
+using System;
 using System.Data.Entity;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Sap.Conn.Service.AppServices
 {
@@ -95,6 +93,6 @@ namespace Sap.Conn.Service.AppServices
             await _dbContext.SaveChangesAsync();
         }
 
-        
+
     }
 }

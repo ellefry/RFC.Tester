@@ -6,12 +6,8 @@ using RFC.Common.Interfaces;
 using Sap.Conn.Service.AppServices;
 using Sap.Conn.Service.AppServices.Interfaces;
 using Sap.Conn.Service.DataStorage;
-using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using System.Reflection;
-using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 

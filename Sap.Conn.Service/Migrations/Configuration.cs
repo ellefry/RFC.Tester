@@ -1,9 +1,6 @@
 ﻿namespace Sap.Conn.Service.Migrations
 {
-    using System;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
-    using System.Linq;
 
     internal sealed class Configuration : DbMigrationsConfiguration<Sap.Conn.Service.DataStorage.SapConnectorContext>
     {
