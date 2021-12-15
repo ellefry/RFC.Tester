@@ -4,6 +4,7 @@ using Sap.Conn.Service.App_Start;
 using Sap.Conn.Service.BackgroudServices;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -30,20 +31,21 @@ namespace Sap.Conn.Service
 
         private IEnumerable<IDisposable> GetHangfireServers()
         {
+            var dbConnection = ConfigurationManager.AppSettings["HangfireDb"];
             Hangfire.GlobalConfiguration.Configuration
                 .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
                 .UseSimpleAssemblyNameTypeSerializer()
                 .UseRecommendedSerializerSettings()
-                .UseSqlServerStorage("Server=.\\sql2019; Database=SapHangfire1; User ID=sa;Password=123456;MultipleActiveResultSets=True;Encrypt=False;TrustServerCertificate=False;",
-                new SqlServerStorageOptions
-                {
-                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
-                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
-                    QueuePollInterval = TimeSpan.Zero,
-                    UseRecommendedIsolationLevel = true,
-                    DisableGlobalLocks = true,
+                .UseSqlServerStorage(dbConnection,
+                    new SqlServerStorageOptions
+                    {
+                        CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                        SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                        QueuePollInterval = TimeSpan.Zero,
+                        UseRecommendedIsolationLevel = true,
+                        DisableGlobalLocks = true,
 
-                });
+                    });
 
             yield return new BackgroundJobServer();
         }
