@@ -204,8 +204,10 @@
     <Compile Include="Controllers\SapController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="DataStorage\SapConnectorContext.cs" />
+    <Compile Include="Domains\Interfaces\ISapSwitcher.cs" />
     <Compile Include="Domains\ProcessRequest.cs" />
     <Compile Include="Domains\ProcessRequestHistory.cs" />
+    <Compile Include="Domains\SapSwitcher.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

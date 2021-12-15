@@ -4,6 +4,7 @@ using RFC.Common.Interfaces;
 using Sap.Conn.Service.AppServices.Interfaces;
 using Sap.Conn.Service.DataStorage;
 using Sap.Conn.Service.Domains;
+using Sap.Conn.Service.Domains.Interfaces;
 using System;
 using System.Data.Entity;
 using System.Linq;
@@ -15,17 +16,25 @@ namespace Sap.Conn.Service.AppServices
     {
         private readonly SapConnectorContext _dbContext;
         private readonly IRfcManager _rfcmanager;
+        private readonly ISapSwitcher _sapSwitcher;
 
-        public ProcessRequestAppService(SapConnectorContext dbContext, IRfcManager rfcmanager)
+        public ProcessRequestAppService(SapConnectorContext dbContext, IRfcManager rfcmanager, ISapSwitcher sapSwitcher)
         {
             _dbContext = dbContext;
             _rfcmanager = rfcmanager;
+            _sapSwitcher = sapSwitcher;
         }
 
         public async Task ProcessSapRfcRequest(ProcessRequestInput input)
         {
             try
             {
+                if (!_sapSwitcher.IsEnabled)
+                {
+                    await SaveFailedSapRequestLog(JsonConvert.SerializeObject(input), FunctionType.RFC,
+                        input.RfcFunctionName, $"Sap switcher is off");
+                    return;
+                }
                 _rfcmanager.ProcessRequest(input);
                 await SaveSapRequestLog(input, FunctionType.RFC, input.RfcFunctionName);
             }
@@ -38,6 +47,9 @@ namespace Sap.Conn.Service.AppServices
 
         public async Task ProcessFailedSapRfcRequest()
         {
+            if (!_sapSwitcher.IsEnabled)
+                return;
+
             var failedRequests = _dbContext.ProcessRequests.ToList();
             foreach (var failedRequest in failedRequests)
             {

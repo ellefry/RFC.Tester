@@ -13,6 +13,8 @@ namespace Sap.Conn.Service
 {
     public class MvcApplication : System.Web.HttpApplication
     {
+        public static bool SapOn { get; set; } = true;
+
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();

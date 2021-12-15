@@ -6,6 +6,8 @@ using RFC.Common.Interfaces;
 using Sap.Conn.Service.AppServices;
 using Sap.Conn.Service.AppServices.Interfaces;
 using Sap.Conn.Service.DataStorage;
+using Sap.Conn.Service.Domains;
+using Sap.Conn.Service.Domains.Interfaces;
 using System.Configuration;
 using System.Reflection;
 using System.Web.Http;
@@ -48,6 +50,8 @@ namespace Sap.Conn.Service.App_Start
 
             //Application Services
             builder.RegisterType<ProcessRequestAppService>().As<IProcessRequestAppService>().InstancePerLifetimeScope();
+
+            builder.RegisterType<SapSwitcher>().As<ISapSwitcher>().InstancePerLifetimeScope();
 
             // Set the dependency resolver to be Autofac.
             IocContainer = builder.Build();
