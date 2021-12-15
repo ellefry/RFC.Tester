@@ -21,12 +21,6 @@ namespace Sap.Conn.Service.BackgroudServices
             ConnectionLock.Wait();
             try
             {
-                //using (var db = new SapConnectorContext())
-                //{
-                //    db.Set<ProcessRequest>().Add(new ProcessRequest { Id = Guid.NewGuid(), FunctionType = 0 });
-                //    db.SaveChanges();
-                //}
-                Debug.Write($"{DateTime.Now} {Environment.NewLine}");
                 using (var scope = IocContainerBuilder.IocContainer.BeginLifetimeScope())
                 {
                     // Resolve services from a scope that is a child of the root container.
@@ -39,8 +33,6 @@ namespace Sap.Conn.Service.BackgroudServices
             {
                 ConnectionLock.Release();
             }
-
-            
         }
     }
 }
