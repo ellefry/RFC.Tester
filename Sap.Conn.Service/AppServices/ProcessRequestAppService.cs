@@ -38,6 +38,26 @@ namespace Sap.Conn.Service.AppServices
             }
         }
 
+        public async Task ProcessFailedSapRfcRequest(ProcessRequest processRequest)
+        {
+            try
+            {
+                var sapRequest = JsonConvert.DeserializeObject<ProcessRequestInput>(processRequest.Content);
+                _rfcmanager.ProcessRequest(sapRequest);
+                await SaveSapRequestLog(processRequest.Content, processRequest.FunctionType, processRequest.FunctionName);
+            }
+            catch (Exception ex)
+            {
+                var pr = _dbContext.ProcessRequests.FirstOrDefault(p => p.Id == processRequest.Id);
+                pr.Error = ex.Message;
+                pr.Modified = DateTimeOffset.Now;
+                pr.Retries += 1;
+                _dbContext.ProcessRequests.Attach(pr);
+                _dbContext.Entry(pr).State = EntityState.Modified;
+                await _dbContext.SaveChangesAsync();
+            }
+        }
+
         private async Task SaveFailedSapRequestLog(string requestBody, FunctionType functionType,
             string functionName, string error)
         {
@@ -67,24 +87,6 @@ namespace Sap.Conn.Service.AppServices
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task ProcessFailedSapRfcRequest(ProcessRequest processRequest)
-        {
-            try
-            {
-                var sapRequest = JsonConvert.DeserializeObject<ProcessRequestInput>(processRequest.Content);
-                _rfcmanager.ProcessRequest(sapRequest);
-                await SaveSapRequestLog(processRequest.Content, processRequest.FunctionType, processRequest.FunctionName);
-            }
-            catch (Exception ex)
-            {
-                var pr = _dbContext.ProcessRequests.FirstOrDefault(p => p.Id == processRequest.Id);
-                pr.Error = ex.Message;
-                pr.Modified = DateTimeOffset.Now;
-                pr.Retries += 1;
-                _dbContext.ProcessRequests.Attach(pr);
-                _dbContext.Entry(pr).State = EntityState.Modified;
-                await _dbContext.SaveChangesAsync();
-            }
-        }
+        
     }
 }

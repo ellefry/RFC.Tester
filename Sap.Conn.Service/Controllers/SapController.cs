@@ -1,11 +1,11 @@
 ﻿using RFC.Common;
 using Sap.Conn.Service.AppServices.Interfaces;
 using System.Threading.Tasks;
-using System.Web.Mvc;
+using System.Web.Http;
 
 namespace Sap.Conn.Service.Controllers
 {
-    public class SapController : Controller
+    public class SapController : ApiController
     {
         private readonly IProcessRequestAppService _processRequestAppService;
 

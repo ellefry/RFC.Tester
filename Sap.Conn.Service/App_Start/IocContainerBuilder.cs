@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
+using Autofac.Integration.WebApi;
 using RFC.Common;
 using RFC.Common.Interfaces;
 using Sap.Conn.Service.AppServices;
@@ -9,7 +10,9 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Reflection;
 using System.Web;
+using System.Web.Http;
 using System.Web.Mvc;
 
 namespace Sap.Conn.Service.App_Start
@@ -23,6 +26,7 @@ namespace Sap.Conn.Service.App_Start
             // Register your MVC controllers. (MvcApplication is the name of
             // the class in Global.asax.)
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
+            builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
 
             // OPTIONAL: Register model binders that require DI.
             builder.RegisterModelBinders(typeof(MvcApplication).Assembly);
@@ -49,6 +53,7 @@ namespace Sap.Conn.Service.App_Start
 
             // Set the dependency resolver to be Autofac.
             var container = builder.Build();
+            GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver(container);
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
         }
 
