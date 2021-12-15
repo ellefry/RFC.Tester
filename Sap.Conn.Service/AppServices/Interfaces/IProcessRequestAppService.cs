@@ -10,7 +10,7 @@ namespace Sap.Conn.Service.AppServices.Interfaces
 {
     public interface IProcessRequestAppService
     {
-        Task ProcessSapRequest(ProcessRequestInput input);
-        Task ProcessFailedSapRequest(ProcessRequest processRequest);
+        Task ProcessSapRfcRequest(ProcessRequestInput input);
+        Task ProcessFailedSapRfcRequest(ProcessRequest processRequest);
     }
 }

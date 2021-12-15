@@ -23,7 +23,7 @@ namespace Sap.Conn.Service.Controllers
         [HttpPost]
         public async Task ProcessSapRequest(ProcessRequestInput input)
         {
-           await _processRequestAppService.ProcessSapRequest(input);
+           await _processRequestAppService.ProcessSapRfcRequest(input);
         }
     }
 }

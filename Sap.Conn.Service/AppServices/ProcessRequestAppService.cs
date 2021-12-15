@@ -24,51 +24,56 @@ namespace Sap.Conn.Service.AppServices
             _rfcmanager = rfcmanager;
         }
 
-        public async Task ProcessSapRequest(ProcessRequestInput input)
+        public async Task ProcessSapRfcRequest(ProcessRequestInput input)
         {
             try
             {
                 _rfcmanager.ProcessRequest(input);
-                _dbContext.ProcessRequestHistories.Add(new ProcessRequestHistory
-                {
-                    Id = Guid.NewGuid(),
-                    Content = JsonConvert.SerializeObject(input),
-                    Created = DateTimeOffset.Now,
-                    FunctionType = FunctionType.RFC,
-                    FunctionName = input.RfcFunctionName,
-                });
-                await _dbContext.SaveChangesAsync();
+                await SaveSapRequestLog(input, FunctionType.RFC, input.RfcFunctionName);
             }
             catch (Exception ex)
             {
-                _dbContext.ProcessRequests.Add(new ProcessRequest { 
-                    Id = Guid.NewGuid(),
-                    Content = JsonConvert.SerializeObject(input),
-                    Created = DateTimeOffset.Now,
-                    FunctionType = FunctionType.RFC,
-                    FunctionName = input.RfcFunctionName,
-                    Retries = 0,
-                    Error = ex.Message
-                });
-                await _dbContext.SaveChangesAsync();
+                await SaveFailedSapRequestLog(JsonConvert.SerializeObject(input), FunctionType.RFC, 
+                    input.RfcFunctionName, ex.Message);
             }
         }
 
-        public async Task ProcessFailedSapRequest(ProcessRequest processRequest)
+        private async Task SaveFailedSapRequestLog(string requestBody, FunctionType functionType,
+            string functionName, string error)
+        {
+            _dbContext.ProcessRequests.Add(new ProcessRequest
+            {
+                Id = Guid.NewGuid(),
+                Content = requestBody,
+                Created = DateTimeOffset.Now,
+                FunctionType = functionType,
+                FunctionName = functionName,
+                Retries = 0,
+                Error = error
+            });
+            await _dbContext.SaveChangesAsync();
+        }
+
+        private async Task SaveSapRequestLog<T>(T body, FunctionType functionType, string functionName)
+        {
+            _dbContext.ProcessRequestHistories.Add(new ProcessRequestHistory
+            {
+                Id = Guid.NewGuid(),
+                Content = JsonConvert.SerializeObject(body),
+                Created = DateTimeOffset.Now,
+                FunctionType = FunctionType.RFC,
+                FunctionName = functionName,
+            });
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task ProcessFailedSapRfcRequest(ProcessRequest processRequest)
         {
             try
             {
                 var sapRequest = JsonConvert.DeserializeObject<ProcessRequestInput>(processRequest.Content);
                 _rfcmanager.ProcessRequest(sapRequest);
-                _dbContext.ProcessRequestHistories.Add(new ProcessRequestHistory
-                {
-                    Id = Guid.NewGuid(),
-                    Content = JsonConvert.SerializeObject(processRequest.Content),
-                    Created = DateTimeOffset.Now,
-                    FunctionType = processRequest.FunctionType,
-                    FunctionName = processRequest.FunctionName,
-                });
-                await _dbContext.SaveChangesAsync();
+                await SaveSapRequestLog(processRequest.Content, processRequest.FunctionType, processRequest.FunctionName);
             }
             catch (Exception ex)
             {
