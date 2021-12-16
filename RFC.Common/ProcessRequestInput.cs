@@ -8,7 +8,7 @@ namespace RFC.Common
 {
     public class ProcessRequestInput
     {
-        public string DestinationName { get; set; }
+        public string DestinationName { get; set; } = "mySAPdestination";
         public string RfcFunctionName { get; set; }
         public RfcParameter functionParam { get; set; }
         public RfcParameter headerParam { get; set; }

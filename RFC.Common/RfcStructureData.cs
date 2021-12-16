@@ -14,6 +14,8 @@ namespace RFC.Common
     {
         public string Key { get; set; }
         public object Value { get; set; }
+
+        public object TargetValue { get; set; }
     }
 
 }
