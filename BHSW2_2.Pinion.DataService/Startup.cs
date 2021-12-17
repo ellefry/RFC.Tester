@@ -30,6 +30,7 @@ namespace BHSW2_2.Pinion.DataService
                 c.BaseAddress = new Uri("https://localhost:9100/api");
                 c.DefaultRequestHeaders.Add("Accept", "application/json");
             });
+            services.AddDbContext(Configuration);
             services.AddControllers();
         }
 

@@ -4,16 +4,19 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.Text;
+using System;
+using BHSW2_2.Pinion.DataService.Clients.Abstracts;
 
 namespace BHSW2_2.Pinion.DataService.Clients
 {
-    public class SapConnectorClient
+    public class SapConnectorClient : ISapConnectorClient
     {
         private readonly IHttpClientFactory _httpClientFactory;
 
         public SapConnectorClient(IHttpClientFactory httpClientFactory)
         {
-            _httpClientFactory=httpClientFactory;
+            _httpClientFactory = httpClientFactory;
         }
 
         public async Task FinishPart(FinishPartInput input)
@@ -68,10 +71,23 @@ namespace BHSW2_2.Pinion.DataService.Clients
             };
             var content = new StringContent(JsonConvert.SerializeObject(processRequestInput));
             var response = await httpClient.PostAsync($"{httpClient.BaseAddress}/sap", content);
+
+            await HandleException(response);
+        }
+
+        private async Task HandleException(HttpResponseMessage response)
+        {
             if (!response.IsSuccessStatusCode)
             {
-                System.Console.WriteLine("FinishPart error");
+                var errorMessage = new StringBuilder();
+                errorMessage.AppendLine($"[Http Request Error]");
+                errorMessage.AppendLine($"[Request Url]: {response.RequestMessage.RequestUri}");
+                errorMessage.AppendLine($"[Status]: {response.StatusCode}");
+                errorMessage.AppendLine($"[Headers]: {response.Headers}");
+                errorMessage.AppendLine($"[Body]: {await response.Content.ReadAsStringAsync()}");
+                throw new Exception(errorMessage.ToString());
             }
+            await Task.CompletedTask;
         }
     }
 }
