@@ -30,6 +30,7 @@ namespace BHSW2_2.Pinion.DataService
                 c.BaseAddress = new Uri("https://localhost:9100/api");
                 c.DefaultRequestHeaders.Add("Accept", "application/json");
             });
+            services.AddSwaggerGen();
             services.AddDbContext(Configuration);
             services.AddControllers();
         }
@@ -43,6 +44,14 @@ namespace BHSW2_2.Pinion.DataService
             }
 
             app.UseRouting();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sap Connector V1");
+                c.RoutePrefix = string.Empty;
+                c.DefaultModelsExpandDepth(-1);//hide model layer
+            });
 
             app.UseAuthorization();
 
