@@ -1,0 +1,1 @@
+﻿New-EventLog -Source BHSW -LogName BHSW2_2.Pinion

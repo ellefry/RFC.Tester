@@ -18,6 +18,14 @@ namespace BHSW2_2.Pinion.DataService
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureLogging(logging =>
+                {
+                    logging.AddEventLog(eventLogSettings =>
+                    {
+                        eventLogSettings.LogName = "BHSW2_2.Pinion";
+                        eventLogSettings.SourceName = "BHSW";
+                    });
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();

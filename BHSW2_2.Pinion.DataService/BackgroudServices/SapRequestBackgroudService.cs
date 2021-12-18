@@ -26,7 +26,7 @@ namespace BHSW2_2.Pinion.DataService.BackgroudServices
             {
                 try
                 {
-                    logger.LogTrace("Start retry send notifications >>>>>>>>>>>>");
+                    logger.LogInformation("Start process sap request >>>>>>>>>>>>");
                     await Handle();
                 }
                 catch (Exception e)
