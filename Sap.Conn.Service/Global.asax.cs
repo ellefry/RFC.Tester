@@ -20,15 +20,15 @@ namespace Sap.Conn.Service
             AreaRegistration.RegisterAllAreas();
             System.Web.Http.GlobalConfiguration.Configure(WebApiConfig.Register);
             IocContainerBuilder.Build();
-            HangfireAspNet.Use(GetHangfireServers);
+            //HangfireAspNet.Use(GetHangfireServers);
 
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             //RecurringJob.AddOrUpdate("powerfuljob", () => PowerfulJob(), "0/5 * * * * ?");
-            RecurringJob.AddOrUpdate<SapFailureHandler>("SapFailureHandler", service => service.ProcessFailure(),
-                "0/30 * * * * ?");
+            //RecurringJob.AddOrUpdate<SapFailureHandler>("SapFailureHandler", service => service.ProcessFailure(),
+            //   "0/30 * * * * ?");
         }
 
         private IEnumerable<IDisposable> GetHangfireServers()

@@ -27,22 +27,9 @@ namespace Sap.Conn.Service.AppServices
 
         public async Task ProcessSapRfcRequest(ProcessRequestInput input)
         {
-            try
-            {
-                if (!_sapSwitcher.IsEnabled)
-                {
-                    await SaveFailedSapRequestLog(JsonConvert.SerializeObject(input), FunctionType.RFC,
-                        input.RfcFunctionName, $"Sap switcher is off");
-                    return;
-                }
+
                 _rfcmanager.ProcessRequest(input);
-                await SaveSapRequestLog(input, FunctionType.RFC, input.RfcFunctionName);
-            }
-            catch (Exception ex)
-            {
-                await SaveFailedSapRequestLog(JsonConvert.SerializeObject(input), FunctionType.RFC,
-                    input.RfcFunctionName, $"{ex.GetType()} : {ex.Message}");
-            }
+
         }
 
         public async Task ProcessFailedSapRfcRequest()

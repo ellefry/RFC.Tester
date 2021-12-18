@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System.Text;
 using System;
 using BHSW2_2.Pinion.DataService.Clients.Abstracts;
+using System.Net.Http.Headers;
 
 namespace BHSW2_2.Pinion.DataService.Clients
 {
@@ -70,6 +71,8 @@ namespace BHSW2_2.Pinion.DataService.Clients
                 },
             };
             var content = new StringContent(JsonConvert.SerializeObject(processRequestInput));
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             var response = await httpClient.PostAsync($"{httpClient.BaseAddress}/sap", content);
 
             await HandleException(response);

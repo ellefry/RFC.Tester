@@ -8,7 +8,7 @@ namespace Sap.Conn.Service.DataStorage
     {
         public SapConnectorContext() : base("SapConnector")
         {
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<SapConnectorContext, Configuration>());
+            //Database.SetInitializer(new MigrateDatabaseToLatestVersion<SapConnectorContext, Configuration>());
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

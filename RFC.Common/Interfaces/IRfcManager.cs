@@ -8,6 +8,6 @@ namespace RFC.Common.Interfaces
 {
   public interface IRfcManager
   {
-        void ProcessRequest(ProcessRequestInput input);
+        ProcessRequestInput ProcessRequest(ProcessRequestInput input);
   }
 }

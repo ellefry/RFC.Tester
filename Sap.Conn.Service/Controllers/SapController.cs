@@ -1,4 +1,5 @@
 ﻿using RFC.Common;
+using RFC.Common.Interfaces;
 using Sap.Conn.Service.AppServices.Interfaces;
 using Sap.Conn.Service.Domains.Interfaces;
 using System.Threading.Tasks;
@@ -8,13 +9,11 @@ namespace Sap.Conn.Service.Controllers
 {
     public class SapController : ApiController
     {
-        private readonly IProcessRequestAppService _processRequestAppService;
-        private readonly ISapSwitcher _sapSwitcher;
+        private readonly IRfcManager _rfcmanager;
 
-        public SapController(IProcessRequestAppService processRequestAppService, ISapSwitcher sapSwitcher)
+        public SapController(IRfcManager rfcmanager)
         {
-            _processRequestAppService = processRequestAppService;
-            _sapSwitcher = sapSwitcher;
+            _rfcmanager = rfcmanager;
         }
 
         [HttpGet]
@@ -24,24 +23,10 @@ namespace Sap.Conn.Service.Controllers
         }
 
         [HttpPost]
-        public async Task ProcessSapRequest(ProcessRequestInput input)
+        public async Task<ProcessRequestInput> ProcessSapRequest(ProcessRequestInput input)
         {
-            await _processRequestAppService.ProcessSapRfcRequest(input);
+             return await Task.FromResult(_rfcmanager.ProcessRequest(input));
         }
-
-        [HttpGet]
-        [Route("switcher")]
-        public async Task<bool> GetSapSwitcher()
-        {
-            return await Task.FromResult(_sapSwitcher.IsEnabled);
-        }
-
-        [HttpPost]
-        [Route("switcher/{enabled}")]
-        public async Task GetSapSwitcher(bool enabled)
-        {
-            _sapSwitcher.IsEnabled = enabled;
-            await Task.CompletedTask;
-        }
+     
     }
 }
