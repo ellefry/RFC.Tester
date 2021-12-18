@@ -1,3 +1,9 @@
+using BHSW2_2.Pinion.DataService.AppServices;
+using BHSW2_2.Pinion.DataService.AppServices.Interfaces;
+using BHSW2_2.Pinion.DataService.BackgroudServices;
+using BHSW2_2.Pinion.DataService.Clients;
+using BHSW2_2.Pinion.DataService.Clients.Abstracts;
+using BHSW2_2.Pinion.DataService.FailureHandlers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +36,13 @@ namespace BHSW2_2.Pinion.DataService
                 c.BaseAddress = new Uri("https://localhost:9100/api");
                 c.DefaultRequestHeaders.Add("Accept", "application/json");
             });
+
+            //logic services
+            services.AddScoped<ISapRequestAppService, SapRequestAppService>();
+            services.AddScoped<ISapConnectorClient, SapConnectorClient>();
+            services.AddFailureHandlerServices();
+            services.AddHostedService<SapRequestBackgroudService>();
+
             services.AddSwaggerGen();
             services.AddDbContext(Configuration);
             services.AddControllers();

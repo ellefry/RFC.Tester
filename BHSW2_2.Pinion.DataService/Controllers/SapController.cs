@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BHSW2_2.Pinion.DataService.AppServices.Interfaces;
+using BHSW2_2.Pinion.DataService.Clients.Dtos;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace BHSW2_2.Pinion.DataService.Controllers
@@ -7,14 +9,17 @@ namespace BHSW2_2.Pinion.DataService.Controllers
     [Route("api/sap")]
     public class SapController : ControllerBase
     {
-        public SapController()
+        private readonly ISapRequestAppService _sapRequestAppService;
+
+        public SapController(ISapRequestAppService sapRequestAppService)
         {
+            _sapRequestAppService = sapRequestAppService;
         }
 
         [HttpPost("FinishPart")]
-        public async Task FinishPart()
+        public async Task FinishPart(FinishPartInput input)
         {
-            await Task.CompletedTask;
+            await _sapRequestAppService.FinishPartAsync(input);
         }
     }
 }

@@ -17,6 +17,7 @@ namespace BHSW2_2.Pinion.DataService
 
         public void UpdateRetry(string error)
         {
+            SapRequestStatus = SapRequestStatus.Failed;
             Retries++;
             Error = error;
             Modified = DateTimeOffset.Now;

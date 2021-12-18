@@ -79,7 +79,7 @@ namespace BHSW2_2.Pinion.DataService.Clients
         {
             if (!response.IsSuccessStatusCode)
             {
-                var errorMessage = new StringBuilder();
+                var errorMessage = new StringBuilder("SapConnectorClient :");
                 errorMessage.AppendLine($"[Http Request Error]");
                 errorMessage.AppendLine($"[Request Url]: {response.RequestMessage.RequestUri}");
                 errorMessage.AppendLine($"[Status]: {response.StatusCode}");
