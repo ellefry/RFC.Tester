@@ -46,7 +46,7 @@ namespace RFC.Common.UnitTests
 
            
 
-            input.functionParam = new RfcParameter {
+            input.FunctionParam = new RfcParameter {
                 Data = new List<RfcStructureData> {
                    new RfcStructureData {Key = "Function_1", Value = "test" },
                    new RfcStructureData {Key = "Function_2", Value = 1 },
@@ -54,7 +54,7 @@ namespace RFC.Common.UnitTests
                 }
             };
 
-            input.headerParam = new RfcParameter
+            input.HeaderParam = new RfcParameter
             {
                 StructureName = "IM_HEADER",
                 Data = new List<RfcStructureData> {
@@ -64,17 +64,17 @@ namespace RFC.Common.UnitTests
                 }
             };
 
-            input.tableParams.StructureName = string.Empty;
+            input.TableParams.StructureName = string.Empty;
 
-            input.returnHeaders = new RfcParameter
+            input.ReturnHeaders = new RfcParameter
             {
                 StructureName = "EX_HEADER",
             };
-            input.returnStructure = new RfcParameter
+            input.ReturnStructure = new RfcParameter
             {
                 StructureName = "EX_RETURN"
             };
-            input.returnTable = new RfcParameter
+            input.ReturnTable = new RfcParameter
             {
                 StructureName = string.Empty
             };

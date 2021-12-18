@@ -26,22 +26,16 @@ namespace Sap.Conn.Service
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-
-            //RecurringJob.AddOrUpdate("powerfuljob", () => PowerfulJob(), "0/5 * * * * ?");
-            //RecurringJob.AddOrUpdate<SapFailureHandler>("SapFailureHandler", service => service.ProcessFailure(),
-            //   "0/30 * * * * ?");
         }
 
         void Application_Error(object sender, EventArgs e)
         {
-            // Grab information about the last error occurred 
             var exception = Server.GetLastError();
-
-            // Clear the response stream 
+            HttpException httpException = exception as HttpException;
             var httpContext = ((HttpApplication)sender).Context;
             httpContext.Response.StatusCode = 500;
             httpContext.Response.Clear();
-            httpContext.ClearError();
+            Server.ClearError();
         }
 
         private IEnumerable<IDisposable> GetHangfireServers()

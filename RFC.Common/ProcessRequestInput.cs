@@ -10,11 +10,11 @@ namespace RFC.Common
     {
         public string DestinationName { get; set; } = "mySAPdestination";
         public string RfcFunctionName { get; set; }
-        public RfcParameter functionParam { get; set; }
-        public RfcParameter headerParam { get; set; }
-        public RfcParameter tableParams { get; set; }
-        public RfcParameter returnHeaders { get; set; }
-        public RfcParameter returnStructure { get; set; }
-        public RfcParameter returnTable { get; set; }
+        public RfcParameter FunctionParam { get; set; }
+        public RfcParameter HeaderParam { get; set; }
+        public RfcParameter TableParams { get; set; }
+        public RfcParameter ReturnHeaders { get; set; }
+        public RfcParameter ReturnStructure { get; set; }
+        public RfcParameter ReturnTable { get; set; }
     }
 }

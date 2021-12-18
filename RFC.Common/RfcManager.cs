@@ -23,8 +23,8 @@ namespace RFC.Common
         public ProcessRequestInput ProcessRequest(ProcessRequestInput input)
         {
             ProcessRequest(input.DestinationName, input.RfcFunctionName,
-                input.functionParam, input.headerParam, input.tableParams,
-                input.returnHeaders, input.returnStructure, input.returnTable);
+                input.FunctionParam, input.HeaderParam, input.TableParams,
+                input.ReturnHeaders, input.ReturnStructure, input.ReturnTable);
             return input;
         }
 

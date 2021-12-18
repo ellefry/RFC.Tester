@@ -8,6 +8,7 @@ using System.Text;
 using System;
 using BHSW2_2.Pinion.DataService.Clients.Abstracts;
 using System.Net.Http.Headers;
+using System.Linq;
 
 namespace BHSW2_2.Pinion.DataService.Clients
 {
@@ -26,7 +27,7 @@ namespace BHSW2_2.Pinion.DataService.Clients
             ProcessRequestInput processRequestInput = new ProcessRequestInput { 
                 DestinationName = "mySAPdestination",
                 RfcFunctionName = "FunctionZPP_REPMANCONF1_CREATE_MTS",
-                headerParam  = new RfcParameter { 
+                HeaderParam  = new RfcParameter { 
                     StructureName = "IM_HEADRET",
                     Data  = new List<RfcStructureData> {
                         new RfcStructureData{ Key = "PLANT", Value=input.Plant },
@@ -40,7 +41,7 @@ namespace BHSW2_2.Pinion.DataService.Clients
                     }
                 },
                 
-                returnHeaders = new RfcParameter
+                ReturnHeaders = new RfcParameter
                 {
                     StructureName = "EX_HEADRET",
                     Data  = new List<RfcStructureData> {
@@ -52,7 +53,7 @@ namespace BHSW2_2.Pinion.DataService.Clients
                     }
                 },
 
-                returnStructure = new RfcParameter
+                ReturnStructure = new RfcParameter
                 {
                     StructureName = "EX_RETURN",
                     Data  = new List<RfcStructureData> {
@@ -79,7 +80,15 @@ namespace BHSW2_2.Pinion.DataService.Clients
 
             //process return
             var returnValue = await response.Content.ReadAsStringAsync();
-            var finishPartResponse = JsonConvert.DeserializeObject<ProcessRequestInput>(returnValue);
+            var finishPart = JsonConvert.DeserializeObject<ProcessRequestInput>(returnValue);
+            var msgType = finishPart.ReturnStructure.Data.FirstOrDefault(r => r.Key == "MSG_TYP");
+            if (msgType.Value?.ToString() == msgType.TargetValue.ToString())
+            {
+                var errorMessage = $"Sap returns error : MSG_TXT1 : {finishPart.ReturnStructure.Data.FirstOrDefault(r => r.Key == "MSG_TXT1")?.Value} " +
+                    $"MSG_TXT2: {finishPart.ReturnStructure.Data.FirstOrDefault(r => r.Key == "MSG_TX2")?.Value} " +
+                    $": MSG_TXT3 :{finishPart.ReturnStructure.Data.FirstOrDefault(r => r.Key == "MSG_TXT3")?.Value}";
+                throw new Exception(errorMessage.ToString());
+            }
 
         }
 
@@ -87,12 +96,13 @@ namespace BHSW2_2.Pinion.DataService.Clients
         {
             if (!response.IsSuccessStatusCode)
             {
-                var errorMessage = new StringBuilder("SapConnectorClient :");
+                var errorMessage = new StringBuilder("FinishPart :");
                 errorMessage.AppendLine($"[Http Request Error]");
                 errorMessage.AppendLine($"[Request Url]: {response.RequestMessage.RequestUri}");
                 errorMessage.AppendLine($"[Status]: {response.StatusCode}");
-                errorMessage.AppendLine($"[Headers]: {response.Headers}");
                 errorMessage.AppendLine($"[Body]: {await response.Content.ReadAsStringAsync()}");
+                if (errorMessage.Length > 1000)
+                    errorMessage.Remove(1000, errorMessage.Length - 1000);
                 throw new Exception(errorMessage.ToString());
             }
             await Task.CompletedTask;
