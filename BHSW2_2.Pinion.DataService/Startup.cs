@@ -31,11 +31,9 @@ namespace BHSW2_2.Pinion.DataService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpClient();
-            services.AddHttpClient("Sap.Conn.Service", c =>
+            services.AddHttpClient(SapConnectorConstants.SapConnectorName, c =>
             {
-                c.BaseAddress = new Uri("http://localhost:44344/api");
-                //c.DefaultRequestHeaders.Add("Accept", "application/json");
-                //c.DefaultRequestHeaders.Add("content-type", "application/json");
+                c.BaseAddress = new Uri(Configuration.GetValue<string>(SapConnectorConstants.SapConnectorName));
             });
 
             //logic services

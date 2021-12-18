@@ -23,10 +23,10 @@ namespace BHSW2_2.Pinion.DataService.Clients
 
         public async Task FinishPart(FinishPartInput input)
         {
-            var httpClient = _httpClientFactory.CreateClient("Sap.Conn.Service");
+            var httpClient = _httpClientFactory.CreateClient(SapConnectorConstants.SapConnectorName);
             ProcessRequestInput processRequestInput = new ProcessRequestInput { 
                 DestinationName = "mySAPdestination",
-                RfcFunctionName = "FunctionZPP_REPMANCONF1_CREATE_MTS",
+                RfcFunctionName = "ZPP_REPMANCONF1_CREATE_MTS",
                 HeaderParam  = new RfcParameter { 
                     StructureName = "IM_HEADRET",
                     Data  = new List<RfcStructureData> {
