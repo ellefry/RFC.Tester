@@ -5,6 +5,7 @@ using Sap.Conn.Service.BackgroudServices;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -29,6 +30,18 @@ namespace Sap.Conn.Service
             //RecurringJob.AddOrUpdate("powerfuljob", () => PowerfulJob(), "0/5 * * * * ?");
             //RecurringJob.AddOrUpdate<SapFailureHandler>("SapFailureHandler", service => service.ProcessFailure(),
             //   "0/30 * * * * ?");
+        }
+
+        void Application_Error(object sender, EventArgs e)
+        {
+            // Grab information about the last error occurred 
+            var exception = Server.GetLastError();
+
+            // Clear the response stream 
+            var httpContext = ((HttpApplication)sender).Context;
+            httpContext.Response.StatusCode = 500;
+            httpContext.Response.Clear();
+            httpContext.ClearError();
         }
 
         private IEnumerable<IDisposable> GetHangfireServers()

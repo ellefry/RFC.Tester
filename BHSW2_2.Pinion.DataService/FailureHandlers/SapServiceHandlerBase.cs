@@ -25,6 +25,7 @@ namespace BHSW2_2.Pinion.DataService.FailureHandlers
                 Created = DateTimeOffset.Now
             };
             _dbContext.SapRequestHistories.Add(history);
+            _dbContext.SapRequests.Remove(sapRequest);
             await _dbContext.SaveChangesAsync();
         }
 

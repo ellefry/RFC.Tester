@@ -76,6 +76,11 @@ namespace BHSW2_2.Pinion.DataService.Clients
             var response = await httpClient.PostAsync($"{httpClient.BaseAddress}/sap", content);
 
             await HandleException(response);
+
+            //process return
+            var returnValue = await response.Content.ReadAsStringAsync();
+            var finishPartResponse = JsonConvert.DeserializeObject<ProcessRequestInput>(returnValue);
+
         }
 
         private async Task HandleException(HttpResponseMessage response)

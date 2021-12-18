@@ -28,32 +28,32 @@ namespace RFC.Common
             return input;
         }
 
-        private void ProcessRequest(string destinationName, string rfcFunctionName,
-           RfcParameter functionParam, RfcParameter headerParam, RfcParameter tableParams,
-           RfcParameter returnHeaders, RfcParameter returnStructure, RfcParameter returnTable
-        )
-        {
-            headerParam.Data.Add(new RfcStructureData { Key = "ssss0", Value = "sssss" });
-            returnStructure.Data.Add(new RfcStructureData { Key = "ssss0", Value = "sssss" });
-        }
-
         //private void ProcessRequest(string destinationName, string rfcFunctionName,
-        //    RfcParameter functionParam, RfcParameter headerParam, RfcParameter tableParams,
-        //    RfcParameter returnHeaders, RfcParameter returnStructure, RfcParameter returnTable
+        //   RfcParameter functionParam, RfcParameter headerParam, RfcParameter tableParams,
+        //   RfcParameter returnHeaders, RfcParameter returnStructure, RfcParameter returnTable
         //)
         //{
-        //    using (_rfcRepositoryCreator)
-        //    {
-        //        var repoWrapper = _rfcRepositoryCreator.Create(destinationName);
-        //        var function = _rfcFunctionCreator.Create(rfcFunctionName, repoWrapper.RfcRepository);
-
-        //        FormatInputParameters(function, functionParam, headerParam, tableParams);
-        //        //invoke
-        //        _rfcFunctionCreator.Execute(function, repoWrapper);
-
-        //        FormatReturnResult(function, returnHeaders, returnStructure, returnTable);
-        //    }
+        //    headerParam.Data.Add(new RfcStructureData { Key = "ssss0", Value = "sssss" });
+        //    returnStructure.Data.Add(new RfcStructureData { Key = "ssss0", Value = "sssss" });
         //}
+
+        private void ProcessRequest(string destinationName, string rfcFunctionName,
+            RfcParameter functionParam, RfcParameter headerParam, RfcParameter tableParams,
+            RfcParameter returnHeaders, RfcParameter returnStructure, RfcParameter returnTable
+        )
+        {
+            using (_rfcRepositoryCreator)
+            {
+                var repoWrapper = _rfcRepositoryCreator.Create(destinationName);
+                var function = _rfcFunctionCreator.Create(rfcFunctionName, repoWrapper.RfcRepository);
+
+                FormatInputParameters(function, functionParam, headerParam, tableParams);
+                //invoke
+                _rfcFunctionCreator.Execute(function, repoWrapper);
+
+                FormatReturnResult(function, returnHeaders, returnStructure, returnTable);
+            }
+        }
 
         /// <summary>
         /// Format input parameters
