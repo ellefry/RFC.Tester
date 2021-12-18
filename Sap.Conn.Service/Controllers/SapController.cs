@@ -16,12 +16,6 @@ namespace Sap.Conn.Service.Controllers
             _rfcmanager = rfcmanager;
         }
 
-        [HttpGet]
-        public async Task Failures()
-        {
-            await Task.CompletedTask;
-        }
-
         [HttpPost]
         public async Task<ProcessRequestInput> ProcessSapRequest(ProcessRequestInput input)
         {

@@ -4,6 +4,7 @@ using BHSW2_2.Pinion.DataService.BackgroudServices;
 using BHSW2_2.Pinion.DataService.Clients;
 using BHSW2_2.Pinion.DataService.Clients.Abstracts;
 using BHSW2_2.Pinion.DataService.FailureHandlers;
+using BHSW2_2.Pinion.DataService.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -41,6 +42,7 @@ namespace BHSW2_2.Pinion.DataService
             services.AddScoped<ISapConnectorClient, SapConnectorClient>();
             services.AddFailureHandlerServices();
             services.AddHostedService<SapRequestBackgroudService>();
+            services.AddSingleton<ISapSwitcher, SapSwitcher>();
 
             services.AddSwaggerGen();
             services.AddDbContext(Configuration);

@@ -2,6 +2,7 @@
 using BHSW2_2.Pinion.DataService.Clients.Abstracts;
 using BHSW2_2.Pinion.DataService.Clients.Dtos;
 using BHSW2_2.Pinion.DataService.FailureHandlers.Interfaces;
+using BHSW2_2.Pinion.DataService.Interfaces;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -13,13 +14,15 @@ namespace BHSW2_2.Pinion.DataService.AppServices
     public class SapRequestAppService : ISapRequestAppService
     {
         private readonly SapConnectorContext _sapConnectorContext;
+        private readonly ISapSwitcher _sapSwitcher;
         private readonly IEnumerable<ISapServiceHandler> _sapServiceHandlers;
 
-        public SapRequestAppService(SapConnectorContext sapConnectorContext, 
-            IEnumerable<ISapServiceHandler> sapServiceHandlers)
+        public SapRequestAppService(SapConnectorContext sapConnectorContext,
+            IEnumerable<ISapServiceHandler> sapServiceHandlers, ISapSwitcher sapSwitcher)
         {
             _sapConnectorContext = sapConnectorContext;
             _sapServiceHandlers = sapServiceHandlers;
+            _sapSwitcher = sapSwitcher;
         }
 
         public async Task FinishPartAsync(FinishPartInput input)
@@ -39,6 +42,9 @@ namespace BHSW2_2.Pinion.DataService.AppServices
             var sapRequests = _sapConnectorContext.SapRequests.ToList();
             foreach (var sapRequest in sapRequests)
             {
+                if (!_sapSwitcher.IsEnabled)
+                    return;
+
                 var handler = _sapServiceHandlers.FirstOrDefault(h => h.GetType().Name == sapRequest.FunctionName);
                 await handler?.Handle(sapRequest);
             }
