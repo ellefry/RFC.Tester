@@ -187,8 +187,6 @@ namespace BHSW2_2.Pinion.DataService.Clients
                 errorMessage.AppendLine($"[Request Url]: {response.RequestMessage.RequestUri}");
                 errorMessage.AppendLine($"[Status]: {response.StatusCode}");
                 errorMessage.AppendLine($"[Body]: {await response.Content.ReadAsStringAsync()}");
-                if (errorMessage.Length > 1000)
-                    errorMessage.Remove(1000, errorMessage.Length - 1000);
                 throw new Exception(errorMessage.ToString());
             }
             await Task.CompletedTask;
