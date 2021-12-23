@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace BHSW2_2.Pinion.DataService.FailureHandlers
 {
-    public class FinishPartSapServiceHandler : SapServiceHandlerBase
+    public class ScrapPartSapServiceHandler : SapServiceHandlerBase
     {
         private readonly ISapConnectorClient _sapConnectorClient;
 
-        public FinishPartSapServiceHandler(SapConnectorContext dbContext, ISapConnectorClient sapConnectorClient) 
+        public ScrapPartSapServiceHandler(SapConnectorContext dbContext, ISapConnectorClient sapConnectorClient) 
             : base(dbContext)
         {
             _sapConnectorClient = sapConnectorClient;
@@ -19,8 +19,8 @@ namespace BHSW2_2.Pinion.DataService.FailureHandlers
 
         protected override async Task ProcessSapRequest(SapRequest sapRequest)
         {
-            var input = JsonConvert.DeserializeObject<FinishPartInput>(sapRequest.Content);
-            await _sapConnectorClient.FinishPart(input);
+            var input = JsonConvert.DeserializeObject<ScrapPartInput>(sapRequest.Content);
+            await _sapConnectorClient.ScrapPart(input);
         }
     }
 }

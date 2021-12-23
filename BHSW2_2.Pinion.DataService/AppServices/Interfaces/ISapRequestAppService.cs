@@ -6,6 +6,7 @@ namespace BHSW2_2.Pinion.DataService.AppServices.Interfaces
     public interface ISapRequestAppService
     {
         Task FinishPartAsync(FinishPartInput input);
+        Task ScrapPartAsync(ScrapPartInput input);
         Task ProcessSapRequest();
     }
 }

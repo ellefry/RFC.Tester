@@ -25,6 +25,12 @@ namespace BHSW2_2.Pinion.DataService.Controllers
             await _sapRequestAppService.FinishPartAsync(input);
         }
 
+        [HttpPost("ScrapPart")]
+        public async Task ScrapPart(ScrapPartInput input)
+        {
+            await _sapRequestAppService.ScrapPartAsync(input);
+        }
+
         [HttpGet("switcher")]
         public async Task<bool> GetSapSwitcher()
         {

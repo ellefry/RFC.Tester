@@ -1,4 +1,5 @@
 ﻿using BHSW2_2.Pinion.DataService.FailureHandlers.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
@@ -13,7 +14,22 @@ namespace BHSW2_2.Pinion.DataService.FailureHandlers
             _dbContext = dbContext;
         }
 
-        public abstract Task Handle(SapRequest sapRequest);
+        public async Task Handle(SapRequest sapRequest)
+        {
+            try
+            {
+                await ProcessSapRequest(sapRequest);
+                await MoveToHistory(sapRequest);
+            }
+            catch (Exception ex)
+            {
+                sapRequest.UpdateRetry(ex.Message);
+                _dbContext.Entry(sapRequest).State = EntityState.Modified;
+                await _dbContext.SaveChangesAsync();
+            }
+        }
+
+        protected abstract Task ProcessSapRequest(SapRequest sapRequest);
 
         protected async Task MoveToHistory(SapRequest sapRequest)
         {

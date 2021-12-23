@@ -37,6 +37,18 @@ namespace BHSW2_2.Pinion.DataService.AppServices
             await _sapConnectorContext.SaveChangesAsync();
         }
 
+        public async Task ScrapPartAsync(ScrapPartInput input)
+        {
+            var sapRequest = new SapRequest
+            {
+                Id = Guid.NewGuid(),
+                Content = JsonConvert.SerializeObject(input),
+                FunctionName = "ScrapPartSapServiceHandler",
+            };
+            _sapConnectorContext.SapRequests.Add(sapRequest);
+            await _sapConnectorContext.SaveChangesAsync();
+        }
+
         public async Task ProcessSapRequest()
         {
             var sapRequests = _sapConnectorContext.SapRequests.ToList();
