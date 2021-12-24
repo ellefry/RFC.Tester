@@ -59,7 +59,7 @@ namespace BHSW2_2.Pinion.DataService
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.InitializeDatabase();
             app.UseRouting();
 
             app.UseSwagger();
