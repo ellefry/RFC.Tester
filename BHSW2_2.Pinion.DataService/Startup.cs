@@ -3,6 +3,7 @@ using BHSW2_2.Pinion.DataService.AppServices.Interfaces;
 using BHSW2_2.Pinion.DataService.BackgroudServices;
 using BHSW2_2.Pinion.DataService.Clients;
 using BHSW2_2.Pinion.DataService.Clients.Abstracts;
+using BHSW2_2.Pinion.DataService.Extensions;
 using BHSW2_2.Pinion.DataService.FailureHandlers;
 using BHSW2_2.Pinion.DataService.Interfaces;
 using Microsoft.AspNetCore.Builder;
@@ -46,7 +47,9 @@ namespace BHSW2_2.Pinion.DataService
 
             services.AddSwaggerGen();
             services.AddDbContext(Configuration);
-            services.AddControllers();
+
+            services.AddControllers()
+                .AddMvcOptions(options => options.Filters.Add<HttpExceptionFilter>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

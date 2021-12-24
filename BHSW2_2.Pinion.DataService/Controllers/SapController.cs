@@ -1,5 +1,6 @@
 ﻿using BHSW2_2.Pinion.DataService.AppServices.Interfaces;
 using BHSW2_2.Pinion.DataService.Clients.Dtos;
+using BHSW2_2.Pinion.DataService.Extensions;
 using BHSW2_2.Pinion.DataService.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -20,15 +21,17 @@ namespace BHSW2_2.Pinion.DataService.Controllers
         }
 
         [HttpPost("FinishPart")]
-        public async Task FinishPart(FinishPartInput input)
+        public async Task<ResponseResult> FinishPart(FinishPartInput input)
         {
             await _sapRequestAppService.FinishPartAsync(input);
+            return new ResponseResult();
         }
 
         [HttpPost("ScrapPart")]
-        public async Task ScrapPart(ScrapPartInput input)
+        public async Task<ResponseResult> ScrapPart(ScrapPartInput input)
         {
             await _sapRequestAppService.ScrapPartAsync(input);
+            return new ResponseResult();
         }
 
         [HttpGet("switcher")]
