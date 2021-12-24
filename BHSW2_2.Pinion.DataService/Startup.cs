@@ -67,7 +67,7 @@ namespace BHSW2_2.Pinion.DataService
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sap Connector V1");
                 c.RoutePrefix = string.Empty;
-                c.DefaultModelsExpandDepth(-1);//hide model layer
+                //c.DefaultModelsExpandDepth(-1);//hide model layer
             });
 
             app.UseAuthorization();

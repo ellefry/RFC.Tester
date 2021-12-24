@@ -1,14 +1,16 @@
-﻿using BHSW2_2.Pinion.DataService.AppServices.Interfaces;
+﻿using BHSW2_2.Pinion.DataService.AppServices.Dtos;
+using BHSW2_2.Pinion.DataService.AppServices.Interfaces;
 using BHSW2_2.Pinion.DataService.Clients.Dtos;
 using BHSW2_2.Pinion.DataService.Extensions;
 using BHSW2_2.Pinion.DataService.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BHSW2_2.Pinion.DataService.Controllers
 {
     [ApiController]
-    [Route("api/sap")]
+    [Route("api/saps")]
     public class SapController : ControllerBase
     {
         private readonly ISapRequestAppService _sapRequestAppService;
@@ -32,6 +34,18 @@ namespace BHSW2_2.Pinion.DataService.Controllers
         {
             await _sapRequestAppService.ScrapPartAsync(input);
             return new ResponseResult();
+        }
+
+        [HttpGet("")]
+        public async Task<List<SapRequest>> GetSapRequests([FromQuery] GetSapRequestsInput input)
+        {
+            return await _sapRequestAppService.GetSapRequests(input);
+        }
+
+        [HttpPost("ReSend")]
+        public async Task ReSendSapRequest([FromBody]ReSendSapRequestInput input)
+        {
+            await _sapRequestAppService.ReSendSapRequest(input);
         }
 
         [HttpGet("switcher")]

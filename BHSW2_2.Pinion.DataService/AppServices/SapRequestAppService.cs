@@ -1,8 +1,10 @@
-﻿using BHSW2_2.Pinion.DataService.AppServices.Interfaces;
+﻿using BHSW2_2.Pinion.DataService.AppServices.Dtos;
+using BHSW2_2.Pinion.DataService.AppServices.Interfaces;
 using BHSW2_2.Pinion.DataService.Clients.Abstracts;
 using BHSW2_2.Pinion.DataService.Clients.Dtos;
 using BHSW2_2.Pinion.DataService.FailureHandlers.Interfaces;
 using BHSW2_2.Pinion.DataService.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -49,9 +51,29 @@ namespace BHSW2_2.Pinion.DataService.AppServices
             await _sapConnectorContext.SaveChangesAsync();
         }
 
+        public async Task<List<SapRequest>> GetSapRequests(GetSapRequestsInput input)
+        {
+            var query = _sapConnectorContext.SapRequests.AsQueryable();
+            if (!string.IsNullOrWhiteSpace(input?.SapRequestType))
+                query = query.Where(q => q.FunctionName.StartsWith(input.SapRequestType));
+            var itemsCount = (input?.ItemCount) ?? 100;
+            query = query.OrderByDescending(q=>q.Retries).Take(itemsCount);
+            return await query.ToListAsync();
+        }
+
+        public async Task ReSendSapRequest(ReSendSapRequestInput input)
+        {
+            var sapRequest = await _sapConnectorContext.SapRequests.FirstOrDefaultAsync(s => s.Id == input.SapRequestId);
+            if (sapRequest == null)
+                throw new ApplicationException($"SapRequest doen not existed: [{input.SapRequestId}]");
+            sapRequest.UpateProcessOrder(input.Content, input.ProcessOrder);
+            _sapConnectorContext.Entry(sapRequest).State = EntityState.Modified;
+            await _sapConnectorContext.SaveChangesAsync();
+        }
+
         public async Task ProcessSapRequest()
         {
-            var sapRequests = _sapConnectorContext.SapRequests.ToList();
+            var sapRequests = _sapConnectorContext.SapRequests.OrderByDescending(s=>s.ProcessOrder).ToList();
             foreach (var sapRequest in sapRequests)
             {
                 if (!_sapSwitcher.IsEnabled)

@@ -14,6 +14,8 @@ namespace BHSW2_2.Pinion.DataService.BackgroudServices
         private readonly ILogger<SapRequestBackgroudService> logger;
         private readonly IServiceProvider _serviceProvider;
 
+        private static bool bgsStart = false;
+
         public SapRequestBackgroudService(ILogger<SapRequestBackgroudService> logger, IServiceProvider serviceProvider)
         {
             this.logger = logger;
@@ -26,7 +28,7 @@ namespace BHSW2_2.Pinion.DataService.BackgroudServices
             {
                 try
                 {
-                    logger.LogInformation("Start process sap request >>>>>>>>>>>>");
+                    logger.LogInformation($"Start process sap request at [{DateTime.Now}] >>>>>>>>>>>>");
                     await Handle();
                 }
                 catch (Exception e)
@@ -42,6 +44,7 @@ namespace BHSW2_2.Pinion.DataService.BackgroudServices
 
         private async Task Handle()
         {
+            await Task.Delay(TimeSpan.FromSeconds(10));
             using var scope = _serviceProvider.CreateScope();
             var sapRequestAppService = scope.ServiceProvider.GetRequiredService<ISapRequestAppService>();
             await sapRequestAppService.ProcessSapRequest();
