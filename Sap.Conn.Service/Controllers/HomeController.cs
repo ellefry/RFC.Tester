@@ -7,11 +7,6 @@ namespace Sap.Conn.Service.Controllers
     {
         public ActionResult Index()
         {
-            using (var db = new SapConnectorContext())
-            {
-                //db.Set<ProcessRequest>().Add(new ProcessRequest { FunctionType = 0});
-                //db.SaveChanges();
-            }
             return View();
         }
 
