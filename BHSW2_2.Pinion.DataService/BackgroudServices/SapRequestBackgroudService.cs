@@ -35,7 +35,7 @@ namespace BHSW2_2.Pinion.DataService.BackgroudServices
                 }
                 finally
                 {
-                    await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
+                    await Task.Delay(TimeSpan.FromSeconds(30), stoppingToken);
                 }
             }
         }
