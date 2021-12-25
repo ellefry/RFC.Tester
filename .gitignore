@@ -386,3 +386,4 @@ FodyWeavers.xsd
 # JetBrains Rider
 .idea/
 *.sln.iml
+/BHSW2_2.Pinion.DataService/.config

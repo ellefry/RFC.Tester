@@ -14,8 +14,6 @@ namespace BHSW2_2.Pinion.DataService.BackgroudServices
         private readonly ILogger<SapRequestBackgroudService> logger;
         private readonly IServiceProvider _serviceProvider;
 
-        private static bool bgsStart = false;
-
         public SapRequestBackgroudService(ILogger<SapRequestBackgroudService> logger, IServiceProvider serviceProvider)
         {
             this.logger = logger;
