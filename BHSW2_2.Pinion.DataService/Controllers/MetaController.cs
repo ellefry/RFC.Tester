@@ -20,6 +20,7 @@ namespace BHSW2_2.Pinion.DataService.Controllers
         public async Task<dynamic> Get()
         {
             var s = string.Empty;
+            var s1 = string.Empty;
             return await Task.FromResult(
                new
                {
