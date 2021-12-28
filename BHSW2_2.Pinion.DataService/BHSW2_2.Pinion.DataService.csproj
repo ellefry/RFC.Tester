@@ -20,5 +20,9 @@
     <ProjectReference Include="..\RFC.Common\RFC.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
+  </ItemGroup>
+
 
 </Project>
