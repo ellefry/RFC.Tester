@@ -69,6 +69,8 @@ namespace Sap.Conn.Service.App_Start
             config.Password = ConfigurationManager.AppSettings["sap:Password"];
             config.Client = ConfigurationManager.AppSettings["sap:Client"];
             config.Language = ConfigurationManager.AppSettings["sap:Language"];
+            config.PoolSize = "5";
+            config.ReposotoryPassword = "";
             return config;
         }
     }
