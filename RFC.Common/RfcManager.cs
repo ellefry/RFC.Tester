@@ -66,13 +66,13 @@ namespace RFC.Common
         private IRfcFunction FormatInputParameters(IRfcFunction function, RfcParameter functionParam, RfcParameter headerParam, RfcParameter bodyParams)
         {
             //function params
-            foreach (var rfcStructureData in functionParam.Data ?? Enumerable.Empty<RfcStructureData>())
+            foreach (var rfcStructureData in functionParam?.Data ?? Enumerable.Empty<RfcStructureData>())
             {
                 function.SetValue(rfcStructureData.Key, rfcStructureData.Value);
             }
 
             //header params
-            if (!string.IsNullOrEmpty(headerParam.StructureName))
+            if (!string.IsNullOrEmpty(headerParam?.StructureName))
             {
                 var headerStructure = function.GetStructure(headerParam.StructureName);
                 foreach (var rfcStructureData in headerParam.Data ?? Enumerable.Empty<RfcStructureData>())
@@ -82,7 +82,7 @@ namespace RFC.Common
             }
 
             //table params
-            if (!string.IsNullOrEmpty(headerParam.StructureName))
+            if (!string.IsNullOrEmpty(headerParam?.StructureName))
             {
                 var items = function.GetTable(bodyParams.StructureName);
                 items.Insert();
@@ -105,33 +105,43 @@ namespace RFC.Common
         private void FormatReturnResult(IRfcFunction function, RfcParameter returnHeaders, RfcParameter returnStructure, RfcParameter returnTable)
         {
             //return headers
-            if (!string.IsNullOrEmpty(returnHeaders.StructureName))
+            if (!string.IsNullOrEmpty(returnHeaders?.StructureName))
             {
                 var rfcReturnHeader = function.GetStructure(returnHeaders.StructureName);
-                for (var liElement = 0; liElement < rfcReturnHeader.ElementCount; liElement++)
+                if (rfcReturnHeader != null)
                 {
-                    var element = rfcReturnHeader.GetElementMetadata(liElement);
-                    var headerRow = new RfcStructureData { Key =  element.Name, Value = rfcReturnHeader.GetValue(element.Name) };
-                    returnHeaders.Data.Add(headerRow);
+                    for (var liElement = 0; liElement < rfcReturnHeader.ElementCount; liElement++)
+                    {
+                        var element = rfcReturnHeader.GetElementMetadata(liElement);
+                        var headerRow = new RfcStructureData { Key = element.Name, Value = rfcReturnHeader.GetValue(element.Name) };
+                        returnHeaders.Data.Add(headerRow);
+                    }
                 }
             }
 
             //return structure
-            if (!string.IsNullOrEmpty(returnStructure.StructureName))
+            if (!string.IsNullOrEmpty(returnStructure?.StructureName))
             {
                 var rfcReturnStructure = function.GetStructure(returnStructure.StructureName);
-                for (var liElement = 0; liElement < rfcReturnStructure.ElementCount; liElement++)
+                if (rfcReturnStructure != null)
                 {
-                    var element = rfcReturnStructure.GetElementMetadata(liElement);
-                    var headerRow = new RfcStructureData { Key =  element.Name, Value = rfcReturnStructure.GetValue(element.Name) };
-                    returnStructure.Data.Add(headerRow);
+                    for (var liElement = 0; liElement < rfcReturnStructure.ElementCount; liElement++)
+                    {
+                        var element = rfcReturnStructure.GetElementMetadata(liElement);
+                        var headerRow = new RfcStructureData { Key = element.Name, Value = rfcReturnStructure.GetValue(element.Name) };
+                        returnStructure.Data.Add(headerRow);
+                    }
                 }
+                
             }
 
-            if (!string.IsNullOrEmpty(returnTable.StructureName))
+            if (!string.IsNullOrEmpty(returnTable?.StructureName))
             {
                 var rfcReturnTable = function.GetTable(returnTable.StructureName);
-                returnTable.TableData.AddRange(rfcReturnTable.ToRfcStructureData());
+                if (rfcReturnTable != null)
+                {
+                    returnTable.TableData.AddRange(rfcReturnTable.ToRfcStructureData());
+                }
             }
         }
 
