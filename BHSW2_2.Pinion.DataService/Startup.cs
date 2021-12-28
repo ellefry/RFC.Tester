@@ -49,7 +49,8 @@ namespace BHSW2_2.Pinion.DataService
             services.AddDbContext(Configuration);
 
             services.AddControllers()
-                .AddMvcOptions(options => options.Filters.Add<HttpExceptionFilter>());
+                .AddMvcOptions(options => options.Filters.Add<HttpExceptionFilter>())
+                .AddJsonOptions(opts => opts.JsonSerializerOptions.PropertyNamingPolicy  = null);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
