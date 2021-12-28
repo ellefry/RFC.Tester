@@ -36,7 +36,7 @@ namespace BHSW2_2.Pinion.DataService.Clients
                         new RfcStructureData{ Key = "SKU_NUM", Value=input.Sku },
                         new RfcStructureData{ Key = "Z_GZKH", Value="" },
                         new RfcStructureData{ Key = "PROD_VER", Value=input.ProductVersion },
-                        new RfcStructureData{ Key = "PSTNG_DATE", Value="YYYYMMDD" },
+                        new RfcStructureData{ Key = "PSTNG_DATE", Value=DateTimeOffset.Now.ToString("yyyyMMdd") },
                         new RfcStructureData{ Key = "OPR_NUM", Value=input.OprNumber },
                     }
                 },
