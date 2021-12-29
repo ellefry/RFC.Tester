@@ -9,6 +9,7 @@ using System;
 using BHSW2_2.Pinion.DataService.Clients.Abstracts;
 using System.Net.Http.Headers;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace BHSW2_2.Pinion.DataService.Clients
 {
@@ -170,7 +171,7 @@ namespace BHSW2_2.Pinion.DataService.Clients
             //process return
             var returnValue = await response.Content.ReadAsStringAsync();
             var scrapPart = JsonConvert.DeserializeObject<ProcessRequestInput>(returnValue);
-            var msgType = scrapPart.ReturnStructure.Data.FirstOrDefault(r => r.Key == "TYPE");
+            var msgType = scrapPart.ReturnTable.Data.FirstOrDefault(r => r.Key == "TYPE");
             if (!msgType.TargetValue.ToString().Contains($"/{msgType.Value?.ToString()}"))
             {
                 var errorMessage = $"Sap returns error : MESSAGE_V1 : {scrapPart.ReturnStructure.Data.FirstOrDefault(r => r.Key == "MESSAGE_V1")?.Value} " +
