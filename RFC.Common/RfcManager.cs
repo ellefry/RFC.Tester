@@ -82,7 +82,7 @@ namespace RFC.Common
             }
 
             //table params
-            if (!string.IsNullOrEmpty(headerParam?.StructureName))
+            if (!string.IsNullOrEmpty(bodyParams?.StructureName))
             {
                 var items = function.GetTable(bodyParams.StructureName);
                 items.Insert();
@@ -132,7 +132,6 @@ namespace RFC.Common
                         returnStructure.Data.Add(headerRow);
                     }
                 }
-                
             }
 
             if (!string.IsNullOrEmpty(returnTable?.StructureName))
