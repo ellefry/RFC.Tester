@@ -6,6 +6,7 @@ using BHSW2_2.Pinion.DataService.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BHSW2_2.Pinion.DataService.AppServices;
 
 namespace BHSW2_2.Pinion.DataService.Controllers
 {
