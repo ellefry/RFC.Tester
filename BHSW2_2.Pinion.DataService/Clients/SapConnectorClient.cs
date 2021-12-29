@@ -24,12 +24,14 @@ namespace BHSW2_2.Pinion.DataService.Clients
         public async Task FinishPart(FinishPartInput input)
         {
             var httpClient = _httpClientFactory.CreateClient(SapConnectorConstants.SapConnectorName);
-            ProcessRequestInput processRequestInput = new ProcessRequestInput { 
+            ProcessRequestInput processRequestInput = new ProcessRequestInput
+            {
                 DestinationName = "mySAPdestination",
                 RfcFunctionName = "ZPP_REPMANCONF1_CREATE_MTS",
-                HeaderParam  = new RfcParameter { 
+                HeaderParam = new RfcParameter
+                {
                     StructureName = "IM_HEADRET",
-                    Data  = new List<RfcStructureData> {
+                    Data = new List<RfcStructureData> {
                         new RfcStructureData{ Key = "PLANT", Value=input.Plant },
                         new RfcStructureData{ Key = "MATERIAL", Value=input.Material },
                         new RfcStructureData{ Key = "BACKFL_QUANT", Value=input.Quantity },
@@ -40,11 +42,11 @@ namespace BHSW2_2.Pinion.DataService.Clients
                         new RfcStructureData{ Key = "OPR_NUM", Value=input.OprNumber },
                     }
                 },
-                
+
                 ReturnHeaders = new RfcParameter
                 {
                     StructureName = "EX_HEADRET",
-                    Data  = new List<RfcStructureData> {
+                    Data = new List<RfcStructureData> {
                         new RfcStructureData{ Key = "MAT_DOC" },
                         new RfcStructureData{ Key = "DOC_YEAR"},
                         new RfcStructureData{ Key = "PSTNG_DATE" },
@@ -56,7 +58,7 @@ namespace BHSW2_2.Pinion.DataService.Clients
                 ReturnStructure = new RfcParameter
                 {
                     StructureName = "EX_RETURN",
-                    Data  = new List<RfcStructureData> {
+                    Data = new List<RfcStructureData> {
                         new RfcStructureData{ Key = "MSG_TYP", TargetValue = "/S" },
                         new RfcStructureData{ Key = "WERKS"},
                         new RfcStructureData{ Key = "MATNR" },
@@ -99,46 +101,47 @@ namespace BHSW2_2.Pinion.DataService.Clients
             {
                 DestinationName = "mySAPdestination",
                 RfcFunctionName = "ZMM_DEAL_SCRAP1",
-                FunctionParam = new RfcParameter { 
-                    Data = new List<RfcStructureData> { 
+                FunctionParam = new RfcParameter
+                {
+                    Data = new List<RfcStructureData> {
                         new RfcStructureData{Key = "I_REF_DOC_NO", Value=input.ScrapNumber },
                         new RfcStructureData{Key = "I_PSTNG_DATE", Value= DateTimeOffset.Now.ToString("yyyyMMdd") },
                         new RfcStructureData{Key = "I_DOC_DATE", Value=DateTimeOffset.Now.ToString("yyyyMMdd")},
                         new RfcStructureData{Key = "I_MATERIAL", Value=input.ParentMaterial },
                         new RfcStructureData{Key = "I_VORNR", Value=input.Vornr },
                     }
-                },    
-                TableParams  = new RfcParameter
+                },
+                TableParams = new RfcParameter
                 {
                     StructureName = "TS_ITEM",
-                    Data  = new List<RfcStructureData> {
+                    Data = new List<RfcStructureData> {
                         new RfcStructureData{ Key = "MATERIAL", Value=input.Material },
                         new RfcStructureData{ Key = "PLANT", Value=input.Plant },
                         new RfcStructureData{ Key = "STGE_LOC", Value=input.StorageLocation },
-                        new RfcStructureData{ Key = "MOVE_TYPE", Value="Z01" },
                         new RfcStructureData{ Key = "ENTRY_QNT", Value=input.Quantity },
-                        new RfcStructureData{ Key = "ZSKUNO", Value= "" },
-                        new RfcStructureData{ Key = "MOVE_REAS", Value="" },
+                        new RfcStructureData{ Key = "MOVE_REAS", Value=input.ScrapReason },
                     }
                 },
 
                 ReturnHeaders = new RfcParameter
                 {
                     StructureName = "EX_HEADRET",
-                    Data  = new List<RfcStructureData> {
+                    Data = new List<RfcStructureData> {
                         new RfcStructureData{ Key = "MAT_DOC" },
                         new RfcStructureData{ Key = "DOC_YEAR"},
-                        new RfcStructureData{ Key = "DOC_YEAR"},
+                        new RfcStructureData{ Key = "REF_DOC_NO"},
                         new RfcStructureData{ Key = "PSTNG_DATE" },
                         new RfcStructureData{ Key = "DOC_DATE" },
                         new RfcStructureData{ Key = "PR_UNAME" },
+                        new RfcStructureData{ Key = "HEADER_TXT"},
+                         new RfcStructureData{ Key = "VORNR"},
                     }
                 },
 
                 ReturnStructure = new RfcParameter
                 {
                     StructureName = "RETURN",
-                    Data  = new List<RfcStructureData> {
+                    Data = new List<RfcStructureData> {
                         new RfcStructureData{ Key = "TYPE", TargetValue = "/S" },
                         new RfcStructureData{ Key = "ID"},
                         new RfcStructureData{ Key = "NUMBER" },
@@ -182,7 +185,7 @@ namespace BHSW2_2.Pinion.DataService.Clients
         {
             if (!response.IsSuccessStatusCode)
             {
-                var errorMessage = new StringBuilder("FinishPart :");
+                var errorMessage = new StringBuilder();
                 errorMessage.AppendLine($"[Http Request Error]");
                 errorMessage.AppendLine($"[Request Url]: {response.RequestMessage.RequestUri}");
                 errorMessage.AppendLine($"[Status]: {response.StatusCode}");
