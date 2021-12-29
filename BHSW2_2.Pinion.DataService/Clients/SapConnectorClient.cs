@@ -138,7 +138,7 @@ namespace BHSW2_2.Pinion.DataService.Clients
                     }
                 },
 
-                ReturnStructure = new RfcParameter
+                ReturnTable = new RfcParameter
                 {
                     StructureName = "RETURN",
                     Data = new List<RfcStructureData> {
