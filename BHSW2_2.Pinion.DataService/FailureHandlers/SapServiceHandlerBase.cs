@@ -23,7 +23,7 @@ namespace BHSW2_2.Pinion.DataService.FailureHandlers
             }
             catch (Exception ex)
             {
-                sapRequest.UpdateRetry(ex.Message);
+                sapRequest.UpdateRetry($"{ex.Message}  {ex.StackTrace}");
                 _dbContext.Entry(sapRequest).State = EntityState.Modified;
                 await _dbContext.SaveChangesAsync();
             }
