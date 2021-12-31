@@ -48,32 +48,12 @@ namespace BHSW2_2.Pinion.DataService.Clients
 
                 ReturnHeaders = new RfcParameter
                 {
-                    StructureName = "EX_HEADRET",
-                    //Data = new List<RfcStructureData> {
-                    //    new RfcStructureData{ Key = "MAT_DOC" },
-                    //    new RfcStructureData{ Key = "DOC_YEAR"},
-                    //    new RfcStructureData{ Key = "PSTNG_DATE" },
-                    //    new RfcStructureData{ Key = "DOC_DATE" },
-                    //    new RfcStructureData{ Key = "PR_UNAME" },
-                    //}
+                    StructureName = "EX_HEADRET"
                 },
 
                 ReturnStructure = new RfcParameter
                 {
-                    StructureName = "EX_RETURN",
-                    //Data = new List<RfcStructureData> {
-                    //    new RfcStructureData{ Key = "MSG_TYP", TargetValue = "/S/W/I" },
-                    //    new RfcStructureData{ Key = "WERKS"},
-                    //    new RfcStructureData{ Key = "MATNR" },
-                    //    new RfcStructureData{ Key = "MAKTX" },
-                    //    new RfcStructureData{ Key = "Z_ERFMG" },
-                    //    new RfcStructureData{ Key = "Z_SKU" },
-                    //    new RfcStructureData{ Key = "VERID" },
-                    //    new RfcStructureData{ Key = "Z_DATUM" },
-                    //    new RfcStructureData{ Key = "MSG_TXT1" },
-                    //    new RfcStructureData{ Key = "MSG_TXT2" },
-                    //    new RfcStructureData{ Key = "MSG_TXT3" },
-                    //}
+                    StructureName = "EX_RETURN"
                 },
             };
             var content = new StringContent(JsonConvert.SerializeObject(processRequestInput));
@@ -87,18 +67,20 @@ namespace BHSW2_2.Pinion.DataService.Clients
             var returnValue = await response.Content.ReadAsStringAsync();
             var finishPart = JsonConvert.DeserializeObject<ProcessRequestInput>(returnValue);
 
-            var message = $"Sap returns result : [MSG_TYP]: {finishPart.ReturnStructure.GetValue("MSG_TYP")}" +
-                   $" [MSG_TXT1]: {finishPart.ReturnStructure.GetValue("MSG_TXT1")} " +
-                   $" [MSG_TXT2]: {finishPart.ReturnStructure.GetValue("MSG_TX2")} " +
-                   $" [MSG_TXT3]: {finishPart.ReturnStructure.GetValue("MSG_TXT3")}";
+            var message = new StringBuilder();
+            message.Append($"Sap returns result : [MSG_TYP]: {finishPart.ReturnStructure.GetValue("MSG_TYP")}");
+            message.Append($" [MSG_TXT1]: {finishPart.ReturnStructure.GetValue("MSG_TXT1")} ");
+            message.Append($" [MSG_TXT2]: {finishPart.ReturnStructure.GetValue("MSG_TX2")} ");
+            message.Append($" [MSG_TXT3]: {finishPart.ReturnStructure.GetValue("MSG_TXT3")}");
+
             _logger.LogInformation($"Sap FinishPart result: {message}");
 
             var msgType = finishPart.ReturnStructure.GetStrcutureData("MSG_TYP") ?? throw new NullReferenceException("MSG_TYP");
-            if (!msgType.TargetValue.ToString().Contains($"/{msgType.Value?.ToString()}"))
+            if (!"/S/W/I".Contains($"/{msgType.Value?.ToString()}"))
             {
-                throw new Exception(message);
+                throw new Exception(message.ToString());
             }
-            return message;
+            return message.ToString();
         }
 
         public async Task<string> ScrapPart(ScrapPartInput input)
@@ -132,39 +114,12 @@ namespace BHSW2_2.Pinion.DataService.Clients
 
                 ReturnHeaders = new RfcParameter
                 {
-                    StructureName = "EX_HEADRET",
-                    //Data = new List<RfcStructureData> {
-                    //    new RfcStructureData{ Key = "MAT_DOC" },
-                    //    new RfcStructureData{ Key = "DOC_YEAR"},
-                    //    new RfcStructureData{ Key = "REF_DOC_NO"},
-                    //    new RfcStructureData{ Key = "PSTNG_DATE" },
-                    //    new RfcStructureData{ Key = "DOC_DATE" },
-                    //    new RfcStructureData{ Key = "PR_UNAME" },
-                    //    new RfcStructureData{ Key = "HEADER_TXT"},
-                    //     new RfcStructureData{ Key = "VORNR"},
-                    //}
+                    StructureName = "EX_HEADRET"
                 },
 
                 ReturnTable = new RfcParameter
                 {
-                    StructureName = "RETURN",
-                    //Data = new List<RfcStructureData> {
-                    //    new RfcStructureData{ Key = "TYPE", TargetValue = "/S/W/I" },
-                    //    new RfcStructureData{ Key = "ID"},
-                    //    new RfcStructureData{ Key = "NUMBER" },
-                    //    new RfcStructureData{ Key = "MESSAGE" },
-                    //    new RfcStructureData{ Key = "LOG_NO" },
-                    //    new RfcStructureData{ Key = "LOG_MSG_NO" },
-                    //    new RfcStructureData{ Key = "MESSAGE_V1" },
-                    //    new RfcStructureData{ Key = "MESSAGE_V2" },
-                    //    new RfcStructureData{ Key = "MESSAGE_V3" },
-                    //    new RfcStructureData{ Key = "MESSAGE_V4" },
-                    //    new RfcStructureData{ Key = "PARAMETER" },
-                    //    new RfcStructureData{ Key = "ROW" },
-                    //    new RfcStructureData{ Key = "FIELD" },
-                    //    new RfcStructureData{ Key = "SYSTEM" },
-
-                    //}
+                    StructureName = "RETURN"
                 },
             };
             var content = new StringContent(JsonConvert.SerializeObject(processRequestInput));
@@ -180,19 +135,22 @@ namespace BHSW2_2.Pinion.DataService.Clients
 
             var scrapPart = JsonConvert.DeserializeObject<ProcessRequestInput>(returnValue);
 
-            var message = $"Sap returns result : [TYPE]: {scrapPart.ReturnTable.GetTableValue("TYPE")}" +
-                    $" [MESSAGE_V1]: {scrapPart.ReturnTable.GetTableValue("MESSAGE_V1")} " +
-                    $" [MESSAGE_V2]: {scrapPart.ReturnTable.GetTableValue("MESSAGE_V2")} " +
-                    $" [MESSAGE_V3]:{scrapPart.ReturnTable.GetTableValue("MESSAGE_V3")}" +
-                    $" [MESSAGE_V4]:{scrapPart.ReturnTable.GetTableValue("MESSAGE_V4")}";
+            var message = new StringBuilder();
+            message.Append($"Sap returns result : [TYPE]: {scrapPart.ReturnTable.GetTableValue("TYPE")}");
+            message.Append($" [MESSAGE]: {scrapPart.ReturnTable.GetTableValue("MESSAGE")}");
+            message.Append($" [MESSAGE_V1]: {scrapPart.ReturnTable.GetTableValue("MESSAGE_V1")}");
+            message.Append($" [MESSAGE_V2]: {scrapPart.ReturnTable.GetTableValue("MESSAGE_V2")}");
+            message.Append($" [MESSAGE_V3]: {scrapPart.ReturnTable.GetTableValue("MESSAGE_V3")}");
+            message.Append($" [MESSAGE_V4]: {scrapPart.ReturnTable.GetTableValue("MESSAGE_V4")}");
+
             _logger.LogInformation($"Sap ScrapPart result: {message}");
 
             var msgType = scrapPart.ReturnTable.GetTableStrcutureData("TYPE") ?? throw new NullReferenceException("TYPE");
-            if (!msgType.TargetValue.ToString().Contains($"/{msgType.Value?.ToString()}"))
+            if (!"/S/W/I".Contains($"/{msgType.Value?.ToString()}"))
             {
-                throw new Exception(message);
+                throw new Exception(message.ToString());
             }
-            return message;
+            return message.ToString();
         }
 
         private async Task HandleException(HttpResponseMessage response)
