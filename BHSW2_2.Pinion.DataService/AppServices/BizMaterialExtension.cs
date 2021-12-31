@@ -6,7 +6,6 @@ namespace BHSW2_2.Pinion.DataService.AppServices
     {
         public static string ToSapMaterial(this string materail, int targetLength = 10, string format = "4-3-3")
         {
-            var s = "test";
             if(string.IsNullOrEmpty(materail))
                 throw new ArgumentNullException(nameof(materail));
 
