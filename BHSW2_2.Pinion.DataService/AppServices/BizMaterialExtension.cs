@@ -7,7 +7,8 @@ namespace BHSW2_2.Pinion.DataService.AppServices
         public static string ToSapMaterial(this string materail, int targetLength = 10, string format = "4-3-3")
         {
             string s = null;
-            if(string.IsNullOrEmpty(materail))
+            string s1 = null;
+            if (string.IsNullOrEmpty(materail))
                 throw new ArgumentNullException(nameof(materail));
 
             materail = materail.Trim();
