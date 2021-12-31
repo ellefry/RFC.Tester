@@ -16,13 +16,15 @@ namespace BHSW2_2.Pinion.DataService.Clients
     public class SapConnectorClient : ISapConnectorClient
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ILogger<SapConnectorClient> _logger;
 
-        public SapConnectorClient(IHttpClientFactory httpClientFactory)
+        public SapConnectorClient(IHttpClientFactory httpClientFactory, ILogger<SapConnectorClient> logger)
         {
             _httpClientFactory = httpClientFactory;
+            _logger = logger;
         }
 
-        public async Task FinishPart(FinishPartInput input)
+        public async Task<string> FinishPart(FinishPartInput input)
         {
             var httpClient = _httpClientFactory.CreateClient(SapConnectorConstants.SapConnectorName);
             ProcessRequestInput processRequestInput = new ProcessRequestInput
@@ -60,7 +62,7 @@ namespace BHSW2_2.Pinion.DataService.Clients
                 {
                     StructureName = "EX_RETURN",
                     Data = new List<RfcStructureData> {
-                        new RfcStructureData{ Key = "MSG_TYP", TargetValue = "/S" },
+                        new RfcStructureData{ Key = "MSG_TYP", TargetValue = "/S/W/I" },
                         new RfcStructureData{ Key = "WERKS"},
                         new RfcStructureData{ Key = "MATNR" },
                         new RfcStructureData{ Key = "MAKTX" },
@@ -84,18 +86,22 @@ namespace BHSW2_2.Pinion.DataService.Clients
             //process return
             var returnValue = await response.Content.ReadAsStringAsync();
             var finishPart = JsonConvert.DeserializeObject<ProcessRequestInput>(returnValue);
-            var msgType = finishPart.ReturnStructure.Data.FirstOrDefault(r => r.Key == "MSG_TYP");
+
+            var message = $"Sap returns result : [MSG_TYP]: {finishPart.ReturnStructure.GetValue("MSG_TYP")}" +
+                   $" [MSG_TXT1]: {finishPart.ReturnStructure.GetValue("MSG_TXT1")} " +
+                   $" [MSG_TXT2]: {finishPart.ReturnStructure.GetValue("MSG_TX2")} " +
+                   $" [MSG_TXT3]: {finishPart.ReturnStructure.GetValue("MSG_TXT3")}";
+            _logger.LogInformation($"Sap FinishPart result: {message}");
+
+            var msgType = finishPart.ReturnStructure.GetStrcutureData("MSG_TYP");
             if (!msgType.TargetValue.ToString().Contains($"/{msgType.Value?.ToString()}"))
             {
-                var errorMessage = $"Sap returns error : MSG_TXT1 : {finishPart.ReturnStructure.Data.FirstOrDefault(r => r.Key == "MSG_TXT1")?.Value} " +
-                    $" MSG_TXT2: {finishPart.ReturnStructure.Data.FirstOrDefault(r => r.Key == "MSG_TX2")?.Value} " +
-                    $" MSG_TXT3 :{finishPart.ReturnStructure.Data.FirstOrDefault(r => r.Key == "MSG_TXT3")?.Value}";
-                throw new Exception(errorMessage.ToString());
+                throw new Exception(message);
             }
-
+            return message;
         }
 
-        public async Task ScrapPart(ScrapPartInput input)
+        public async Task<string> ScrapPart(ScrapPartInput input)
         {
             var httpClient = _httpClientFactory.CreateClient(SapConnectorConstants.SapConnectorName);
             ProcessRequestInput processRequestInput = new ProcessRequestInput
@@ -143,7 +149,7 @@ namespace BHSW2_2.Pinion.DataService.Clients
                 {
                     StructureName = "RETURN",
                     Data = new List<RfcStructureData> {
-                        new RfcStructureData{ Key = "TYPE", TargetValue = "/S" },
+                        new RfcStructureData{ Key = "TYPE", TargetValue = "/S/W/I" },
                         new RfcStructureData{ Key = "ID"},
                         new RfcStructureData{ Key = "NUMBER" },
                         new RfcStructureData{ Key = "MESSAGE" },
@@ -171,15 +177,20 @@ namespace BHSW2_2.Pinion.DataService.Clients
             //process return
             var returnValue = await response.Content.ReadAsStringAsync();
             var scrapPart = JsonConvert.DeserializeObject<ProcessRequestInput>(returnValue);
-            var msgType = scrapPart.ReturnTable.Data.FirstOrDefault(r => r.Key == "TYPE");
+
+            var message = $"Sap returns result : [TYPE]: {scrapPart.ReturnTable.GetTableValue("TYPE")}" +
+                    $" [MESSAGE_V1]: {scrapPart.ReturnTable.GetTableValue("MESSAGE_V1")} " +
+                    $" [MESSAGE_V2]: {scrapPart.ReturnTable.GetTableValue("MESSAGE_V2")} " +
+                    $" [MESSAGE_V3]:{scrapPart.ReturnTable.GetTableValue("MESSAGE_V3")}" +
+                    $" [MESSAGE_V4]:{scrapPart.ReturnTable.GetTableValue("MESSAGE_V4")}";
+            _logger.LogInformation($"Sap ScrapPart result: {message}");
+
+            var msgType = scrapPart.ReturnTable.GetTableStrcutureData("TYPE");
             if (!msgType.TargetValue.ToString().Contains($"/{msgType.Value?.ToString()}"))
             {
-                var errorMessage = $"Sap returns error : MESSAGE_V1 : {scrapPart.ReturnStructure.Data.FirstOrDefault(r => r.Key == "MESSAGE_V1")?.Value} " +
-                    $" MESSAGE_V2: {scrapPart.ReturnStructure.Data.FirstOrDefault(r => r.Key == "MESSAGE_V2")?.Value} " +
-                    $" MESSAGE_V3 :{scrapPart.ReturnStructure.Data.FirstOrDefault(r => r.Key == "MESSAGE_V3")?.Value}" +
-                    $" MESSAGE_V4 :{scrapPart.ReturnStructure.Data.FirstOrDefault(r => r.Key == "MESSAGE_V4")?.Value}";
-                throw new Exception(errorMessage.ToString());
+                throw new Exception(message);
             }
+            return message;
         }
 
         private async Task HandleException(HttpResponseMessage response)

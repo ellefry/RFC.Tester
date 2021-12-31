@@ -17,10 +17,10 @@ namespace BHSW2_2.Pinion.DataService.FailureHandlers
             _sapConnectorClient = sapConnectorClient;
         }
 
-        protected override async Task ProcessSapRequest(SapRequest sapRequest)
+        protected override async Task<string> ProcessSapRequest(SapRequest sapRequest)
         {
             var input = JsonConvert.DeserializeObject<FinishPartInput>(sapRequest.Content);
-            await _sapConnectorClient.FinishPart(input);
+            return await _sapConnectorClient.FinishPart(input);
         }
     }
 }

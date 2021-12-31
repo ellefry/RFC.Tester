@@ -18,8 +18,8 @@ namespace BHSW2_2.Pinion.DataService.FailureHandlers
         {
             try
             {
-                await ProcessSapRequest(sapRequest);
-                await MoveToHistory(sapRequest);
+                var message = await ProcessSapRequest(sapRequest);
+                await MoveToHistory(sapRequest, message);
             }
             catch (Exception ex)
             {
@@ -29,15 +29,16 @@ namespace BHSW2_2.Pinion.DataService.FailureHandlers
             }
         }
 
-        protected abstract Task ProcessSapRequest(SapRequest sapRequest);
+        protected abstract Task<string> ProcessSapRequest(SapRequest sapRequest);
 
-        protected async Task MoveToHistory(SapRequest sapRequest)
+        protected async Task MoveToHistory(SapRequest sapRequest, string message)
         {
             var history = new SapRequestHistory
             {
                 Id = Guid.NewGuid(),
                 Content = sapRequest.Content,
                 FunctionName = sapRequest.FunctionName,
+                SapMessage = message,
                 Created = DateTimeOffset.Now
             };
             _dbContext.SapRequestHistories.Add(history);

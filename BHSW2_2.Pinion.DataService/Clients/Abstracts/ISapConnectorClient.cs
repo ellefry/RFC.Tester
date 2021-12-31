@@ -5,7 +5,7 @@ namespace BHSW2_2.Pinion.DataService.Clients.Abstracts
 {
     public interface ISapConnectorClient
     {
-        Task FinishPart(FinishPartInput input);
-        Task ScrapPart(ScrapPartInput input);
+        Task<string> FinishPart(FinishPartInput input);
+        Task<string> ScrapPart(ScrapPartInput input);
     }
 }
