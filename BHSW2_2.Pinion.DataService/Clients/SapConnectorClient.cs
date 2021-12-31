@@ -49,31 +49,31 @@ namespace BHSW2_2.Pinion.DataService.Clients
                 ReturnHeaders = new RfcParameter
                 {
                     StructureName = "EX_HEADRET",
-                    Data = new List<RfcStructureData> {
-                        new RfcStructureData{ Key = "MAT_DOC" },
-                        new RfcStructureData{ Key = "DOC_YEAR"},
-                        new RfcStructureData{ Key = "PSTNG_DATE" },
-                        new RfcStructureData{ Key = "DOC_DATE" },
-                        new RfcStructureData{ Key = "PR_UNAME" },
-                    }
+                    //Data = new List<RfcStructureData> {
+                    //    new RfcStructureData{ Key = "MAT_DOC" },
+                    //    new RfcStructureData{ Key = "DOC_YEAR"},
+                    //    new RfcStructureData{ Key = "PSTNG_DATE" },
+                    //    new RfcStructureData{ Key = "DOC_DATE" },
+                    //    new RfcStructureData{ Key = "PR_UNAME" },
+                    //}
                 },
 
                 ReturnStructure = new RfcParameter
                 {
                     StructureName = "EX_RETURN",
-                    Data = new List<RfcStructureData> {
-                        new RfcStructureData{ Key = "MSG_TYP", TargetValue = "/S/W/I" },
-                        new RfcStructureData{ Key = "WERKS"},
-                        new RfcStructureData{ Key = "MATNR" },
-                        new RfcStructureData{ Key = "MAKTX" },
-                        new RfcStructureData{ Key = "Z_ERFMG" },
-                        new RfcStructureData{ Key = "Z_SKU" },
-                        new RfcStructureData{ Key = "VERID" },
-                        new RfcStructureData{ Key = "Z_DATUM" },
-                        new RfcStructureData{ Key = "MSG_TXT1" },
-                        new RfcStructureData{ Key = "MSG_TXT2" },
-                        new RfcStructureData{ Key = "MSG_TXT3" },
-                    }
+                    //Data = new List<RfcStructureData> {
+                    //    new RfcStructureData{ Key = "MSG_TYP", TargetValue = "/S/W/I" },
+                    //    new RfcStructureData{ Key = "WERKS"},
+                    //    new RfcStructureData{ Key = "MATNR" },
+                    //    new RfcStructureData{ Key = "MAKTX" },
+                    //    new RfcStructureData{ Key = "Z_ERFMG" },
+                    //    new RfcStructureData{ Key = "Z_SKU" },
+                    //    new RfcStructureData{ Key = "VERID" },
+                    //    new RfcStructureData{ Key = "Z_DATUM" },
+                    //    new RfcStructureData{ Key = "MSG_TXT1" },
+                    //    new RfcStructureData{ Key = "MSG_TXT2" },
+                    //    new RfcStructureData{ Key = "MSG_TXT3" },
+                    //}
                 },
             };
             var content = new StringContent(JsonConvert.SerializeObject(processRequestInput));
@@ -133,38 +133,38 @@ namespace BHSW2_2.Pinion.DataService.Clients
                 ReturnHeaders = new RfcParameter
                 {
                     StructureName = "EX_HEADRET",
-                    Data = new List<RfcStructureData> {
-                        new RfcStructureData{ Key = "MAT_DOC" },
-                        new RfcStructureData{ Key = "DOC_YEAR"},
-                        new RfcStructureData{ Key = "REF_DOC_NO"},
-                        new RfcStructureData{ Key = "PSTNG_DATE" },
-                        new RfcStructureData{ Key = "DOC_DATE" },
-                        new RfcStructureData{ Key = "PR_UNAME" },
-                        new RfcStructureData{ Key = "HEADER_TXT"},
-                         new RfcStructureData{ Key = "VORNR"},
-                    }
+                    //Data = new List<RfcStructureData> {
+                    //    new RfcStructureData{ Key = "MAT_DOC" },
+                    //    new RfcStructureData{ Key = "DOC_YEAR"},
+                    //    new RfcStructureData{ Key = "REF_DOC_NO"},
+                    //    new RfcStructureData{ Key = "PSTNG_DATE" },
+                    //    new RfcStructureData{ Key = "DOC_DATE" },
+                    //    new RfcStructureData{ Key = "PR_UNAME" },
+                    //    new RfcStructureData{ Key = "HEADER_TXT"},
+                    //     new RfcStructureData{ Key = "VORNR"},
+                    //}
                 },
 
                 ReturnTable = new RfcParameter
                 {
                     StructureName = "RETURN",
-                    Data = new List<RfcStructureData> {
-                        new RfcStructureData{ Key = "TYPE", TargetValue = "/S/W/I" },
-                        new RfcStructureData{ Key = "ID"},
-                        new RfcStructureData{ Key = "NUMBER" },
-                        new RfcStructureData{ Key = "MESSAGE" },
-                        new RfcStructureData{ Key = "LOG_NO" },
-                        new RfcStructureData{ Key = "LOG_MSG_NO" },
-                        new RfcStructureData{ Key = "MESSAGE_V1" },
-                        new RfcStructureData{ Key = "MESSAGE_V2" },
-                        new RfcStructureData{ Key = "MESSAGE_V3" },
-                        new RfcStructureData{ Key = "MESSAGE_V4" },
-                        new RfcStructureData{ Key = "PARAMETER" },
-                        new RfcStructureData{ Key = "ROW" },
-                        new RfcStructureData{ Key = "FIELD" },
-                        new RfcStructureData{ Key = "SYSTEM" },
+                    //Data = new List<RfcStructureData> {
+                    //    new RfcStructureData{ Key = "TYPE", TargetValue = "/S/W/I" },
+                    //    new RfcStructureData{ Key = "ID"},
+                    //    new RfcStructureData{ Key = "NUMBER" },
+                    //    new RfcStructureData{ Key = "MESSAGE" },
+                    //    new RfcStructureData{ Key = "LOG_NO" },
+                    //    new RfcStructureData{ Key = "LOG_MSG_NO" },
+                    //    new RfcStructureData{ Key = "MESSAGE_V1" },
+                    //    new RfcStructureData{ Key = "MESSAGE_V2" },
+                    //    new RfcStructureData{ Key = "MESSAGE_V3" },
+                    //    new RfcStructureData{ Key = "MESSAGE_V4" },
+                    //    new RfcStructureData{ Key = "PARAMETER" },
+                    //    new RfcStructureData{ Key = "ROW" },
+                    //    new RfcStructureData{ Key = "FIELD" },
+                    //    new RfcStructureData{ Key = "SYSTEM" },
 
-                    }
+                    //}
                 },
             };
             var content = new StringContent(JsonConvert.SerializeObject(processRequestInput));

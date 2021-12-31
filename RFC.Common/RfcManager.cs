@@ -134,6 +134,7 @@ namespace RFC.Common
                 }
             }
 
+            //return table
             if (!string.IsNullOrEmpty(returnTable?.StructureName))
             {
                 var rfcReturnTable = function.GetTable(returnTable.StructureName);
