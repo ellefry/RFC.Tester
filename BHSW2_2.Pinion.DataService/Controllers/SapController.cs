@@ -44,7 +44,7 @@ namespace BHSW2_2.Pinion.DataService.Controllers
         }
 
         [HttpPost("ReSend")]
-        public async Task ReSendSapRequest([FromBody]ReSendSapRequestInput input)
+        public async Task ReSendSapRequest([FromBody] ReSendSapRequestInput input)
         {
             await _sapRequestAppService.ReSendSapRequest(input);
         }
@@ -60,6 +60,12 @@ namespace BHSW2_2.Pinion.DataService.Controllers
         {
             _sapSwitcher.IsEnabled = enabled;
             await Task.CompletedTask;
+        }
+
+        [HttpGet("Histories")]
+        public async Task<List<SapRequestHistory>> GetSapHistories()
+        {
+            return await _sapRequestAppService.GetSapHistories();
         }
     }
 }

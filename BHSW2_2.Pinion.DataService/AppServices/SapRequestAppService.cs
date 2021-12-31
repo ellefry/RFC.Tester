@@ -57,7 +57,7 @@ namespace BHSW2_2.Pinion.DataService.AppServices
             if (!string.IsNullOrWhiteSpace(input?.SapRequestType))
                 query = query.Where(q => q.FunctionName.StartsWith(input.SapRequestType));
             var itemsCount = (input?.ItemCount) ?? 100;
-            query = query.OrderByDescending(q=>q.Retries).Take(itemsCount);
+            query = query.OrderByDescending(q => q.Retries).Take(itemsCount);
             return await query.ToListAsync();
         }
 
@@ -73,7 +73,7 @@ namespace BHSW2_2.Pinion.DataService.AppServices
 
         public async Task ProcessSapRequest()
         {
-            var sapRequests = _sapConnectorContext.SapRequests.OrderByDescending(s=>s.ProcessOrder).ToList();
+            var sapRequests = _sapConnectorContext.SapRequests.OrderByDescending(s => s.ProcessOrder).ToList();
             foreach (var sapRequest in sapRequests)
             {
                 if (!_sapSwitcher.IsEnabled)
@@ -82,6 +82,12 @@ namespace BHSW2_2.Pinion.DataService.AppServices
                 var handler = _sapServiceHandlers.FirstOrDefault(h => h.GetType().Name == sapRequest.FunctionName);
                 await handler?.Handle(sapRequest);
             }
+        }
+
+        public async Task<List<SapRequestHistory>> GetSapHistories()
+        {
+            var query = _sapConnectorContext.SapRequestHistories.OrderByDescending(h => h.Created).Take(100);
+            return await query.ToListAsync();
         }
     }
 }
