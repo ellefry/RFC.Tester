@@ -4,21 +4,21 @@ namespace BHSW2_2.Pinion.DataService.AppServices
 {
     public static class BizMaterialExtension
     {
-        public static string ToSapMaterial(this string materail, int targetLength = 10, string format = "4-3-3")
+        public static string ToSapMaterial(this string material, int targetLength = 10, string format = "4-3-3")
         {
-            if(string.IsNullOrEmpty(materail))
-                throw new ArgumentNullException(nameof(materail));
+            if(string.IsNullOrEmpty(material))
+                throw new ArgumentNullException(nameof(material));
 
-            materail = materail.Trim();
-            if (materail.Length == targetLength)
+            material = material.Trim();
+            if (material.Length == targetLength)
             {
-                return ConvertByFormat(materail, format);
+                return ConvertByFormat(material, format);
             }
-            if (materail.Length == targetLength + 1)
+            if (material.Length == targetLength + 1)
             {
-                return ConvertByFormat(materail, "4-4-3");
+                return ConvertByFormat(material, "4-4-3");
             }
-            return materail;
+            return material;
         }
 
         private static string ConvertByFormat(string value, string format)
