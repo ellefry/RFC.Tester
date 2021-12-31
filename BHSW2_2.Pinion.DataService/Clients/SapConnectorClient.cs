@@ -93,7 +93,7 @@ namespace BHSW2_2.Pinion.DataService.Clients
                    $" [MSG_TXT3]: {finishPart.ReturnStructure.GetValue("MSG_TXT3")}";
             _logger.LogInformation($"Sap FinishPart result: {message}");
 
-            var msgType = finishPart.ReturnStructure.GetStrcutureData("MSG_TYP");
+            var msgType = finishPart.ReturnStructure.GetStrcutureData("MSG_TYP") ?? throw new NullReferenceException("MSG_TYP");
             if (!msgType.TargetValue.ToString().Contains($"/{msgType.Value?.ToString()}"))
             {
                 throw new Exception(message);
@@ -187,7 +187,7 @@ namespace BHSW2_2.Pinion.DataService.Clients
                     $" [MESSAGE_V4]:{scrapPart.ReturnTable.GetTableValue("MESSAGE_V4")}";
             _logger.LogInformation($"Sap ScrapPart result: {message}");
 
-            var msgType = scrapPart.ReturnTable.GetTableStrcutureData("TYPE");
+            var msgType = scrapPart.ReturnTable.GetTableStrcutureData("TYPE") ?? throw new NullReferenceException("TYPE");
             if (!msgType.TargetValue.ToString().Contains($"/{msgType.Value?.ToString()}"))
             {
                 throw new Exception(message);
