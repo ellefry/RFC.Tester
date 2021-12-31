@@ -9,6 +9,7 @@ using System;
 using BHSW2_2.Pinion.DataService.Clients.Abstracts;
 using System.Net.Http.Headers;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace BHSW2_2.Pinion.DataService.Clients
 {
