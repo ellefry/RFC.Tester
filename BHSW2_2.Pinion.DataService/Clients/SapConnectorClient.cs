@@ -176,6 +176,8 @@ namespace BHSW2_2.Pinion.DataService.Clients
 
             //process return
             var returnValue = await response.Content.ReadAsStringAsync();
+            _logger.LogInformation($"Sap ScrapPart original result: {returnValue}");
+
             var scrapPart = JsonConvert.DeserializeObject<ProcessRequestInput>(returnValue);
 
             var message = $"Sap returns result : [TYPE]: {scrapPart.ReturnTable.GetTableValue("TYPE")}" +
