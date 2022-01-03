@@ -65,13 +65,14 @@ namespace BHSW2_2.Pinion.DataService.Clients
 
             //process return
             var returnValue = await response.Content.ReadAsStringAsync();
+            _logger.LogInformation($"Sap finishpart original result: {returnValue}");
             var finishPart = JsonConvert.DeserializeObject<ProcessRequestInput>(returnValue);
 
             var message = new StringBuilder();
             message.Append($"Sap returns result : [SKU_NUM]: {input.Sku}");
             message.Append($" [MSG_TYP]: {finishPart.ReturnStructure.GetValue("MSG_TYP")}");
             message.Append($" [MSG_TXT1]: {finishPart.ReturnStructure.GetValue("MSG_TXT1")}");
-            message.Append($" [MSG_TXT2]: {finishPart.ReturnStructure.GetValue("MSG_TX2")}");
+            message.Append($" [MSG_TXT2]: {finishPart.ReturnStructure.GetValue("MSG_TXT2")}");
             message.Append($" [MSG_TXT3]: {finishPart.ReturnStructure.GetValue("MSG_TXT3")}");
 
             _logger.LogInformation($"Sap FinishPart result: {message}");
