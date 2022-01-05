@@ -91,7 +91,7 @@ namespace BHSW2_2.Pinion.DataService.Clients
             ProcessRequestInput processRequestInput = new ProcessRequestInput
             {
                 DestinationName = "mySAPdestination",
-                RfcFunctionName = "ZMM_DEAL_SCRAP",
+                RfcFunctionName = "ZMM_DEAL_SCRAP1",
                 FunctionParam = new RfcParameter
                 {
                     Data = new List<RfcStructureData> {
