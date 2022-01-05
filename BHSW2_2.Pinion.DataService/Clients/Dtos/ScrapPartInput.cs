@@ -13,5 +13,13 @@
         public string Material { get; set; }
         public int Quantity { get; set; }
         public int ScrapReason { get; set; }
+        /// <summary>
+        /// 凭证中的过帐日期
+        /// </summary>
+        public string PstngDate { get; set; }
+        /// <summary>
+        /// 凭证中的凭证日期
+        /// </summary>
+        public string DocDate { get; set; }
     }
 }

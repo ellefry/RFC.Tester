@@ -9,5 +9,9 @@
         public string ProductVersion { get; set; }
         public string OprNumber { get; set; }
         public string ZProduction { get; set; }
+        /// <summary>
+        /// 凭证中的过帐日期
+        /// </summary>
+        public string PstngDate { get; set; }
     }
 }
