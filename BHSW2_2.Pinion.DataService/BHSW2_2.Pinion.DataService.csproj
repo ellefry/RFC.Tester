@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RFC.Common\RFC.Common.csproj" />
+    <ProjectReference Include="..\SapWebService.Common\SapWebService.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RFC.Common.UnitTests", "tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sap.Conn.Service", "Sap.Conn.Service\Sap.Conn.Service.csproj", "{87C857A8-9A62-4122-B2BE-E03A2305D312}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BHSW2_2.Pinion.DataService", "BHSW2_2.Pinion.DataService\BHSW2_2.Pinion.DataService.csproj", "{1BC5A3F6-FF13-4EB3-BEAA-487F0E8E12C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BHSW2_2.Pinion.DataService", "BHSW2_2.Pinion.DataService\BHSW2_2.Pinion.DataService.csproj", "{1BC5A3F6-FF13-4EB3-BEAA-487F0E8E12C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SapWebService.Common", "SapWebService.Common\SapWebService.Common.csproj", "{70319596-6749-4A4C-BEEC-DE16C0D439AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,6 +75,14 @@ Global
 		{1BC5A3F6-FF13-4EB3-BEAA-487F0E8E12C8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1BC5A3F6-FF13-4EB3-BEAA-487F0E8E12C8}.Release|x86.ActiveCfg = Release|Any CPU
 		{1BC5A3F6-FF13-4EB3-BEAA-487F0E8E12C8}.Release|x86.Build.0 = Release|Any CPU
+		{70319596-6749-4A4C-BEEC-DE16C0D439AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70319596-6749-4A4C-BEEC-DE16C0D439AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70319596-6749-4A4C-BEEC-DE16C0D439AF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{70319596-6749-4A4C-BEEC-DE16C0D439AF}.Debug|x86.Build.0 = Debug|Any CPU
+		{70319596-6749-4A4C-BEEC-DE16C0D439AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70319596-6749-4A4C-BEEC-DE16C0D439AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70319596-6749-4A4C-BEEC-DE16C0D439AF}.Release|x86.ActiveCfg = Release|Any CPU
+		{70319596-6749-4A4C-BEEC-DE16C0D439AF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

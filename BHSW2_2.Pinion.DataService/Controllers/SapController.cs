@@ -11,6 +11,7 @@ using System.IO;
 using Newtonsoft.Json;
 using RFC.Common;
 using System;
+using SapWebService.Common.Abstracts;
 
 namespace BHSW2_2.Pinion.DataService.Controllers
 {
@@ -21,10 +22,14 @@ namespace BHSW2_2.Pinion.DataService.Controllers
         private readonly ISapRequestAppService _sapRequestAppService;
         private readonly ISapSwitcher _sapSwitcher;
 
-        public SapController(ISapRequestAppService sapRequestAppService, ISapSwitcher sapSwitcher)
+        private readonly IOutboundService _outboundService;
+
+        public SapController(ISapRequestAppService sapRequestAppService, ISapSwitcher sapSwitcher, 
+            IOutboundService outboundService)
         {
             _sapRequestAppService = sapRequestAppService;
             _sapSwitcher = sapSwitcher;
+            _outboundService = outboundService;
         }
 
         [HttpPost("FinishPart")]
@@ -70,6 +75,13 @@ namespace BHSW2_2.Pinion.DataService.Controllers
         public async Task<List<SapRequestHistory>> GetSapHistories()
         {
             return await _sapRequestAppService.GetSapHistories();
+        }
+
+        [HttpGet("Transfer")]
+        public async Task<IActionResult> Tranfer()
+        {
+            await _outboundService.Transfer();
+            return Ok();
         }
     }
 }
