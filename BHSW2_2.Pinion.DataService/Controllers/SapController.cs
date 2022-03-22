@@ -22,14 +22,10 @@ namespace BHSW2_2.Pinion.DataService.Controllers
         private readonly ISapRequestAppService _sapRequestAppService;
         private readonly ISapSwitcher _sapSwitcher;
 
-        private readonly IOutboundService _outboundService;
-
-        public SapController(ISapRequestAppService sapRequestAppService, ISapSwitcher sapSwitcher, 
-            IOutboundService outboundService)
+        public SapController(ISapRequestAppService sapRequestAppService, ISapSwitcher sapSwitcher)
         {
             _sapRequestAppService = sapRequestAppService;
             _sapSwitcher = sapSwitcher;
-            _outboundService = outboundService;
         }
 
         [HttpPost("FinishPart")]
@@ -77,10 +73,10 @@ namespace BHSW2_2.Pinion.DataService.Controllers
             return await _sapRequestAppService.GetSapHistories();
         }
 
-        [HttpGet("Transfer")]
-        public async Task<IActionResult> Tranfer()
+        [HttpPost("OutboundTranfer")]
+        public async Task<IActionResult> OutboundTranfer([FromBody] OutboundTransferInput input)
         {
-            await _outboundService.Transfer();
+            await _sapRequestAppService.OutboundTransfer(input);
             return Ok();
         }
     }

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace SapWebService.Common.Abstracts
 {
     public interface IOutboundService
     {
-        Task Transfer();
+        Task<si_wms0007_outboundResponse> Transfer(dt_wms0007_reqStockTransferc transfer,
+            string address);
     }
 }

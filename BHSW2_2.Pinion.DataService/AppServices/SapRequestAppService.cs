@@ -2,6 +2,7 @@
 using BHSW2_2.Pinion.DataService.AppServices.Interfaces;
 using BHSW2_2.Pinion.DataService.Clients.Abstracts;
 using BHSW2_2.Pinion.DataService.Clients.Dtos;
+using BHSW2_2.Pinion.DataService.FailureHandlers;
 using BHSW2_2.Pinion.DataService.FailureHandlers.Interfaces;
 using BHSW2_2.Pinion.DataService.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -88,6 +89,18 @@ namespace BHSW2_2.Pinion.DataService.AppServices
         {
             var query = _sapConnectorContext.SapRequestHistories.OrderByDescending(h => h.Created).Take(100);
             return await query.ToListAsync();
+        }
+
+        public async Task OutboundTransfer(OutboundTransferInput input)
+        {
+            var sapRequest = new SapRequest
+            {
+                Id = Guid.NewGuid(),
+                Content = JsonConvert.SerializeObject(input),
+                FunctionName = nameof(OutboundTransferServiceHandler),
+            };
+            _sapConnectorContext.SapRequests.Add(sapRequest);
+            await _sapConnectorContext.SaveChangesAsync();
         }
     }
 }

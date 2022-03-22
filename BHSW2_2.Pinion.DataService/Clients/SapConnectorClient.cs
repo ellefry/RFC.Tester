@@ -10,6 +10,10 @@ using BHSW2_2.Pinion.DataService.Clients.Abstracts;
 using System.Net.Http.Headers;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using BHSW2_2.Pinion.DataService.AppServices.Dtos;
+using SapWebService.Common;
+using SapWebService.Common.Abstracts;
+using Microsoft.Extensions.Configuration;
 
 namespace BHSW2_2.Pinion.DataService.Clients
 {
@@ -17,11 +21,16 @@ namespace BHSW2_2.Pinion.DataService.Clients
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ILogger<SapConnectorClient> _logger;
+        private readonly IOutboundService _outboundService;
+        private readonly IConfiguration _configuration;
 
-        public SapConnectorClient(IHttpClientFactory httpClientFactory, ILogger<SapConnectorClient> logger)
+        public SapConnectorClient(IHttpClientFactory httpClientFactory, ILogger<SapConnectorClient> logger,
+            IOutboundService outboundService, IConfiguration configuration)
         {
             _httpClientFactory = httpClientFactory;
             _logger = logger;
+            _outboundService = outboundService;
+            _configuration = configuration;
         }
 
         public async Task<string> FinishPart(FinishPartInput input)
@@ -167,6 +176,56 @@ namespace BHSW2_2.Pinion.DataService.Clients
                 throw new Exception(errorMessage.ToString());
             }
             await Task.CompletedTask;
+        }
+
+        public async Task<string> Tranfer(OutboundTransferInput input)
+        {
+            dt_wms0007_reqStockTransferc transfer = new dt_wms0007_reqStockTransferc();
+            transfer.header = new dt_wms0007_reqStockTransfercHeader
+            {
+                ZWMSNUMBER = input.ZWMSNUMBER,
+                ZWMSNO = input.ZWMSNO,
+                ZWMSDATE = input.ZWMSDATE ?? DateTimeOffset.Now.ToString("yyyyMMdd"),
+                ZWMSOPERATOR = input.ZWMSOPERATOR ?? "MES",
+                ZWMSTIME = input.ZWMSTIME ?? DateTimeOffset.Now.ToString("HHmmdd"),
+            };
+            transfer.items = new dt_wms0007_reqStockTransfercItems[] { 
+                new dt_wms0007_reqStockTransfercItems
+                {
+                    MATNR = input.MATNR,
+                    MENGE = input.MENGE.ToString(),
+                    WERKS = input.WERKS,
+                    LGORT = input.LGORT,
+                    SOBKZ = input.SOBKZ,
+                    LIFNR = input.LIFNR_KDAUF,
+                    INSMK = input.INSMK,
+                    UMWRK = input.UMWRK ?? "WH00",
+                    UMSOK = input.UMSOK ?? "Z",
+                    UMLGO = input.UMLGO ?? "3202",
+                    EMLIF = input.EMLIF,
+                    Zsettlement = input.Zsettlement,
+                }
+            };
+            var address = _configuration.GetValue<string>(SapConnectorConstants.SapOutboudServiceName);
+            var result = await _outboundService.Transfer(transfer, address);
+
+            var message = new StringBuilder();
+            if (result != null && result.mt_wms0007_res != null && result.mt_wms0007_res.Length > 0)
+            {
+                var response = result.mt_wms0007_res[0];
+                message.Append($"Sap outbound transfer result : [TYPE]: {response.ZMESSAGE}");
+                message.Append($" [DETAIL]: {response.ZDETIAL}");
+                message.Append($" [WMSNUMBER]: {response.ZWMSNUMBER}");
+                if (response.ZMESSAGE?.Trim()?.ToUpper() != "S")
+                {
+                    throw new Exception(message.ToString());
+                }
+            }
+            else
+            {
+                throw new Exception("No correct response from server!");
+            }
+            return message.ToString();
         }
     }
 }

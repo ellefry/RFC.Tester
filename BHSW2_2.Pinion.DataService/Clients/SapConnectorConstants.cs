@@ -3,5 +3,6 @@
     public class SapConnectorConstants
     {
         public const string SapConnectorName = "Sap.Conn.Service";
+        public const string SapOutboudServiceName = "Sap.OutboundTransfer.Service";
     }
 }
