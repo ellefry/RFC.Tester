@@ -216,6 +216,8 @@ namespace BHSW2_2.Pinion.DataService.Clients
                 message.Append($"Sap outbound transfer result : [TYPE]: {response.ZMESSAGE}");
                 message.Append($" [DETAIL]: {response.ZDETIAL}");
                 message.Append($" [WMSNUMBER]: {response.ZWMSNUMBER}");
+                _logger.LogInformation($"Sap outbound transfer result: {message}");
+
                 if (response.ZMESSAGE?.Trim()?.ToUpper() != "S")
                 {
                     throw new Exception(message.ToString());
