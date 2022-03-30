@@ -73,7 +73,7 @@ namespace BHSW2_2.Pinion.DataService.Controllers
             return await _sapRequestAppService.GetSapHistories();
         }
 
-        [HttpPost("OutboundTranfer")]
+        [HttpPost("OutboundTransfer")]
         public async Task<IActionResult> OutboundTranfer([FromBody] OutboundTransferInput input)
         {
             await _sapRequestAppService.OutboundTransfer(input);
