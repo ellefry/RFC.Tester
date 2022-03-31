@@ -207,7 +207,10 @@ namespace BHSW2_2.Pinion.DataService.Clients
                 }
             };
             var address = _configuration.GetValue<string>(SapConnectorConstants.SapOutboudServiceName);
-            var result = await _outboundService.Transfer(transfer, address);
+            var username = _configuration.GetValue<string>(SapConnectorConstants.SapUsername);
+            var password = _configuration.GetValue<string>(SapConnectorConstants.SapPassword);
+
+            var result = await _outboundService.Transfer(transfer, address, username, password);
 
             var message = new StringBuilder();
             if (result != null && result.mt_wms0007_res != null && result.mt_wms0007_res.Length > 0)
