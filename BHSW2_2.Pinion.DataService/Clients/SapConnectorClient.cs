@@ -188,29 +188,51 @@ namespace BHSW2_2.Pinion.DataService.Clients
                 ZWMSDATE = input.ZWMSDATE ?? DateTimeOffset.Now.ToString("yyyyMMdd"),
                 ZWMSOPERATOR = input.ZWMSOPERATOR ?? "MES",
                 ZWMSTIME = input.ZWMSTIME ?? DateTimeOffset.Now.ToString("HHmmdd"),
+                reservedField = new dt_wms_reserved_st
+                {
+                    ZRSV01 = string.Empty,
+                    ZRSV02 = string.Empty,
+                    ZRSV03 = string.Empty,
+                    ZRSV04 = string.Empty,
+                    ZRSV05 = string.Empty,
+                }
             };
             transfer.items = new dt_wms0007_reqStockTransfercItems[] { 
                 new dt_wms0007_reqStockTransfercItems
                 {
+                    ZWMSLINE = string.Empty,
                     MATNR = input.MATNR,
                     MENGE = input.MENGE.ToString(),
-                    WERKS = input.WERKS,
+                    WERKS = input.WERKS ?? "WH00",
                     LGORT = input.LGORT,
-                    SOBKZ = input.SOBKZ,
-                    LIFNR = input.LIFNR_KDAUF,
-                    INSMK = input.INSMK,
+                    SOBKZ = input.SOBKZ ?? string.Empty,
+                    LIFNR = input.LIFNR_KDAUF ?? string.Empty,
+                    INSMK = input.INSMK ?? string.Empty,
                     UMWRK = input.UMWRK ?? "WH00",
                     UMSOK = input.UMSOK ?? "Z",
                     UMLGO = input.UMLGO ?? "3202",
-                    EMLIF = input.EMLIF,
-                    Zsettlement = input.Zsettlement,
+                    EMLIF = input.EMLIF ?? string.Empty,
+                    Zsettlement = input.Zsettlement ?? string.Empty,
+                    HULIST = new dt_wms0007_reqStockTransfercItemsHULIST[]{ 
+                        new dt_wms0007_reqStockTransfercItemsHULIST{ 
+                            EXIDV = input.VEKP_EXIDV,
+                            VEMNG= input.VEPO_VEMN.ToString(),
+                            reservedField = new dt_wms_reserved_st{ 
+                                ZRSV01 = string.Empty,
+                                ZRSV02 = string.Empty,
+                                ZRSV03 = string.Empty,
+                                ZRSV04 = string.Empty,
+                                ZRSV05 = string.Empty,
+                            }
+                        }
+                    }
                 }
             };
             var address = _configuration.GetValue<string>(SapConnectorConstants.SapOutboudServiceName);
             var username = _configuration.GetValue<string>(SapConnectorConstants.SapUsername);
             var password = _configuration.GetValue<string>(SapConnectorConstants.SapPassword);
 
-            var result = await _outboundService.Transfer(transfer, address, username, password);
+            var result = _outboundService.Transfer(transfer, address, username, password);
 
             var message = new StringBuilder();
             if (result != null && result.mt_wms0007_res != null && result.mt_wms0007_res.Length > 0)
