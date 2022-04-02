@@ -184,7 +184,7 @@ namespace BHSW2_2.Pinion.DataService.Clients
             transfer.header = new dt_wms0007_reqStockTransfercHeader
             {
                 ZWMSNUMBER = input.ZWMSNUMBER,
-                ZWMSNO = input.ZWMSNO,
+                ZWMSNO = input.ZWMSNO ?? String.Empty,
                 ZWMSDATE = input.ZWMSDATE ?? DateTimeOffset.Now.ToString("yyyyMMdd"),
                 ZWMSOPERATOR = input.ZWMSOPERATOR ?? "MES",
                 ZWMSTIME = input.ZWMSTIME ?? DateTimeOffset.Now.ToString("HHmmdd"),
@@ -238,12 +238,12 @@ namespace BHSW2_2.Pinion.DataService.Clients
             if (result != null && result.mt_wms0007_res != null && result.mt_wms0007_res.Length > 0)
             {
                 var response = result.mt_wms0007_res[0];
-                message.Append($"Sap outbound transfer result : [TYPE]: {response.ZMESSAGE}");
+                message.Append($"Sap outbound transfer result : [MESSAGE]: {response.ZMESSAGE}");
                 message.Append($" [DETAIL]: {response.ZDETIAL}");
                 message.Append($" [WMSNUMBER]: {response.ZWMSNUMBER}");
                 _logger.LogInformation($"Sap outbound transfer result: {message}");
 
-                if (response.ZMESSAGE?.Trim()?.ToUpper() != "S")
+                if (response.ZDETIAL?.Trim()?.ToUpper() != "S")
                 {
                     throw new Exception(message.ToString());
                 }
