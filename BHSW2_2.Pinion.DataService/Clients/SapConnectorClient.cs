@@ -39,7 +39,7 @@ namespace BHSW2_2.Pinion.DataService.Clients
             ProcessRequestInput processRequestInput = new ProcessRequestInput
             {
                 DestinationName = "mySAPdestination",
-                RfcFunctionName = "ZPP_REPMANCONF1_CREATE_MTS",
+                RfcFunctionName = "ZPP_REPMANCONF1_CREATE_MTS_N",
                 HeaderParam = new RfcParameter
                 {
                     StructureName = "IM_HEADRET",
@@ -52,6 +52,7 @@ namespace BHSW2_2.Pinion.DataService.Clients
                         new RfcStructureData{ Key = "PROD_VER", Value=input.ProductVersion },
                         new RfcStructureData{ Key = "PSTNG_DATE", Value = input.PstngDate ?? DateTimeOffset.Now.ToString("yyyyMMdd") },
                         new RfcStructureData{ Key = "OPR_NUM", Value=input.OprNumber },
+                        new RfcStructureData{ Key = "ZPRODUCTION", Value=input.ZProduction },
                     }
                 },
 
