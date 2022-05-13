@@ -8,6 +8,7 @@ namespace BHSW2_2.Pinion.DataService.Interfaces
 {
     public interface ISapSwitcher
     {
-        bool IsEnabled { get; set; }
+        Task EnableSwitcher(bool isEnabled);
+        Task<bool> GetSwitcherStatus();
     }
 }

@@ -75,9 +75,10 @@ namespace BHSW2_2.Pinion.DataService.AppServices
         public async Task ProcessSapRequest()
         {
             var sapRequests = _sapConnectorContext.SapRequests.OrderByDescending(s => s.ProcessOrder).ToList();
+            var switcherEnabled = await _sapSwitcher.GetSwitcherStatus();
             foreach (var sapRequest in sapRequests)
             {
-                if (!_sapSwitcher.IsEnabled)
+                if (!switcherEnabled)
                     return;
 
                 var handler = _sapServiceHandlers.FirstOrDefault(h => h.GetType().Name == sapRequest.FunctionName);

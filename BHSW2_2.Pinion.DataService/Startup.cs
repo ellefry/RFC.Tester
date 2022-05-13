@@ -45,7 +45,7 @@ namespace BHSW2_2.Pinion.DataService
             services.AddScoped<ISapConnectorClient, SapConnectorClient>();
             services.AddFailureHandlerServices();
             services.AddHostedService<SapRequestBackgroudService>();
-            services.AddSingleton<ISapSwitcher, SapSwitcher>();
+            services.AddScoped<ISapSwitcher, SapSwitcher>();
             services.AddSingleton<IOutboundService, OutboundService>();
 
             services.AddSwaggerGen();

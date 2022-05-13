@@ -57,13 +57,14 @@ namespace BHSW2_2.Pinion.DataService.Controllers
         [HttpGet("switcher")]
         public async Task<bool> GetSapSwitcher()
         {
-            return await Task.FromResult(_sapSwitcher.IsEnabled);
+            var result = await _sapSwitcher.GetSwitcherStatus();
+            return await Task.FromResult(result);
         }
 
         [HttpPost("switcher/{enabled}")]
         public async Task GetSapSwitcher(bool enabled)
         {
-            _sapSwitcher.IsEnabled = enabled;
+            await _sapSwitcher.EnableSwitcher(enabled);
             await Task.CompletedTask;
         }
 
