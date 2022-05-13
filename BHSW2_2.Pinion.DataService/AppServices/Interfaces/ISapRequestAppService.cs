@@ -13,5 +13,6 @@ namespace BHSW2_2.Pinion.DataService.AppServices.Interfaces
         Task ReSendSapRequest(ReSendSapRequestInput input);
         Task ProcessSapRequest();
         Task<List<SapRequestHistory>> GetSapHistories();
+        Task OutboundTransfer(OutboundTransferInput input);
     }
 }

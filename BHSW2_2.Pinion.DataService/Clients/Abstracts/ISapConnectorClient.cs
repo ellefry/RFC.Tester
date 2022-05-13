@@ -1,4 +1,5 @@
-﻿using BHSW2_2.Pinion.DataService.Clients.Dtos;
+﻿using BHSW2_2.Pinion.DataService.AppServices.Dtos;
+using BHSW2_2.Pinion.DataService.Clients.Dtos;
 using System.Threading.Tasks;
 
 namespace BHSW2_2.Pinion.DataService.Clients.Abstracts
@@ -7,5 +8,6 @@ namespace BHSW2_2.Pinion.DataService.Clients.Abstracts
     {
         Task<string> FinishPart(FinishPartInput input);
         Task<string> ScrapPart(ScrapPartInput input);
+        Task<string> Tranfer(OutboundTransferInput input);
     }
 }

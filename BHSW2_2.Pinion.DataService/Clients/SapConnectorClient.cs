@@ -10,6 +10,10 @@ using BHSW2_2.Pinion.DataService.Clients.Abstracts;
 using System.Net.Http.Headers;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using BHSW2_2.Pinion.DataService.AppServices.Dtos;
+using SapWebService.Common;
+using SapWebService.Common.Abstracts;
+using Microsoft.Extensions.Configuration;
 
 namespace BHSW2_2.Pinion.DataService.Clients
 {
@@ -17,11 +21,16 @@ namespace BHSW2_2.Pinion.DataService.Clients
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ILogger<SapConnectorClient> _logger;
+        private readonly IOutboundService _outboundService;
+        private readonly IConfiguration _configuration;
 
-        public SapConnectorClient(IHttpClientFactory httpClientFactory, ILogger<SapConnectorClient> logger)
+        public SapConnectorClient(IHttpClientFactory httpClientFactory, ILogger<SapConnectorClient> logger,
+            IOutboundService outboundService, IConfiguration configuration)
         {
             _httpClientFactory = httpClientFactory;
             _logger = logger;
+            _outboundService = outboundService;
+            _configuration = configuration;
         }
 
         public async Task<string> FinishPart(FinishPartInput input)
@@ -30,7 +39,7 @@ namespace BHSW2_2.Pinion.DataService.Clients
             ProcessRequestInput processRequestInput = new ProcessRequestInput
             {
                 DestinationName = "mySAPdestination",
-                RfcFunctionName = "ZPP_REPMANCONF1_CREATE_MTS",
+                RfcFunctionName = "ZPP_REPMANCONF1_CREATE_MTS_N",
                 HeaderParam = new RfcParameter
                 {
                     StructureName = "IM_HEADRET",
@@ -43,6 +52,7 @@ namespace BHSW2_2.Pinion.DataService.Clients
                         new RfcStructureData{ Key = "PROD_VER", Value=input.ProductVersion },
                         new RfcStructureData{ Key = "PSTNG_DATE", Value = input.PstngDate ?? DateTimeOffset.Now.ToString("yyyyMMdd") },
                         new RfcStructureData{ Key = "OPR_NUM", Value=input.OprNumber },
+                        new RfcStructureData{ Key = "ZPRODUCTION", Value=input.ZProduction },
                     }
                 },
 
@@ -167,6 +177,83 @@ namespace BHSW2_2.Pinion.DataService.Clients
                 throw new Exception(errorMessage.ToString());
             }
             await Task.CompletedTask;
+        }
+
+        public async Task<string> Tranfer(OutboundTransferInput input)
+        {
+            dt_wms0007_reqStockTransferc transfer = new dt_wms0007_reqStockTransferc();
+            transfer.header = new dt_wms0007_reqStockTransfercHeader
+            {
+                ZWMSNUMBER = input.ZWMSNUMBER,
+                ZWMSNO = input.ZWMSNO ?? String.Empty,
+                ZWMSDATE = input.ZWMSDATE ?? DateTimeOffset.Now.ToString("yyyyMMdd"),
+                ZWMSOPERATOR = input.ZWMSOPERATOR ?? "MES",
+                ZWMSTIME = input.ZWMSTIME ?? DateTimeOffset.Now.ToString("HHmmdd"),
+                reservedField = new dt_wms_reserved_st
+                {
+                    ZRSV01 = string.Empty,
+                    ZRSV02 = string.Empty,
+                    ZRSV03 = string.Empty,
+                    ZRSV04 = string.Empty,
+                    ZRSV05 = string.Empty,
+                }
+            };
+            transfer.items = new dt_wms0007_reqStockTransfercItems[] { 
+                new dt_wms0007_reqStockTransfercItems
+                {
+                    ZWMSLINE = string.Empty,
+                    MATNR = input.MATNR,
+                    MENGE = input.MENGE.ToString(),
+                    WERKS = input.WERKS ?? "WH00",
+                    LGORT = input.LGORT,
+                    SOBKZ = input.SOBKZ ?? string.Empty,
+                    LIFNR = input.LIFNR_KDAUF ?? string.Empty,
+                    INSMK = input.INSMK ?? string.Empty,
+                    UMWRK = input.UMWRK ?? "WH00",
+                    UMSOK = input.UMSOK ?? "Z",
+                    UMLGO = input.UMLGO ?? "3202",
+                    EMLIF = input.EMLIF ?? string.Empty,
+                    Zsettlement = input.Zsettlement ?? string.Empty,
+                    HULIST = new dt_wms0007_reqStockTransfercItemsHULIST[]{ 
+                        new dt_wms0007_reqStockTransfercItemsHULIST{ 
+                            EXIDV = input.VEKP_EXIDV,
+                            VEMNG= input.VEPO_VEMN.ToString(),
+                            reservedField = new dt_wms_reserved_st{ 
+                                ZRSV01 = string.Empty,
+                                ZRSV02 = string.Empty,
+                                ZRSV03 = string.Empty,
+                                ZRSV04 = string.Empty,
+                                ZRSV05 = string.Empty,
+                            }
+                        }
+                    }
+                }
+            };
+            var address = _configuration.GetValue<string>(SapConnectorConstants.SapOutboudServiceName);
+            var username = _configuration.GetValue<string>(SapConnectorConstants.SapUsername);
+            var password = _configuration.GetValue<string>(SapConnectorConstants.SapPassword);
+
+            var result = _outboundService.Transfer(transfer, address, username, password);
+
+            var message = new StringBuilder();
+            if (result != null && result.mt_wms0007_res != null && result.mt_wms0007_res.Length > 0)
+            {
+                var response = result.mt_wms0007_res[0];
+                message.Append($"Sap outbound transfer result : [MESSAGE]: {response.ZMESSAGE}");
+                message.Append($" [DETAIL]: {response.ZDETIAL}");
+                message.Append($" [WMSNUMBER]: {response.ZWMSNUMBER}");
+                _logger.LogInformation($"Sap outbound transfer result: {message}");
+
+                if (response.ZDETIAL?.Trim()?.ToUpper() != "S")
+                {
+                    throw new Exception(message.ToString());
+                }
+            }
+            else
+            {
+                throw new Exception("No correct response from server!");
+            }
+            return message.ToString();
         }
     }
 }

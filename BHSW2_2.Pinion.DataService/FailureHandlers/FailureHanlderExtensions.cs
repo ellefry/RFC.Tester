@@ -9,6 +9,7 @@ namespace BHSW2_2.Pinion.DataService.FailureHandlers
         {
             services.AddScoped<ISapServiceHandler, FinishPartSapServiceHandler>();
             services.AddScoped<ISapServiceHandler, ScrapPartSapServiceHandler>();
+            services.AddScoped<ISapServiceHandler, OutboundTransferServiceHandler>();
         }
     }
 }

@@ -13,6 +13,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using SapWebService.Common;
+using SapWebService.Common.Abstracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +45,8 @@ namespace BHSW2_2.Pinion.DataService
             services.AddScoped<ISapConnectorClient, SapConnectorClient>();
             services.AddFailureHandlerServices();
             services.AddHostedService<SapRequestBackgroudService>();
-            services.AddSingleton<ISapSwitcher, SapSwitcher>();
+            services.AddScoped<ISapSwitcher, SapSwitcher>();
+            services.AddSingleton<IOutboundService, OutboundService>();
 
             services.AddSwaggerGen();
             services.AddDbContext(Configuration);

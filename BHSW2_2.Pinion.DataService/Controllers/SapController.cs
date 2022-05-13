@@ -11,6 +11,7 @@ using System.IO;
 using Newtonsoft.Json;
 using RFC.Common;
 using System;
+using SapWebService.Common.Abstracts;
 
 namespace BHSW2_2.Pinion.DataService.Controllers
 {
@@ -56,13 +57,14 @@ namespace BHSW2_2.Pinion.DataService.Controllers
         [HttpGet("switcher")]
         public async Task<bool> GetSapSwitcher()
         {
-            return await Task.FromResult(_sapSwitcher.IsEnabled);
+            var result = await _sapSwitcher.GetSwitcherStatus();
+            return await Task.FromResult(result);
         }
 
         [HttpPost("switcher/{enabled}")]
         public async Task GetSapSwitcher(bool enabled)
         {
-            _sapSwitcher.IsEnabled = enabled;
+            await _sapSwitcher.EnableSwitcher(enabled);
             await Task.CompletedTask;
         }
 
@@ -70,6 +72,13 @@ namespace BHSW2_2.Pinion.DataService.Controllers
         public async Task<List<SapRequestHistory>> GetSapHistories()
         {
             return await _sapRequestAppService.GetSapHistories();
+        }
+
+        [HttpPost("OutboundTransfer")]
+        public async Task<IActionResult> OutboundTranfer([FromBody] OutboundTransferInput input)
+        {
+            await _sapRequestAppService.OutboundTransfer(input);
+            return Ok();
         }
     }
 }

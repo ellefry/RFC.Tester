@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BHSW2_2.Pinion.DataService.Domains;
+using Microsoft.EntityFrameworkCore;
 
 namespace BHSW2_2.Pinion.DataService
 {
@@ -16,5 +17,6 @@ namespace BHSW2_2.Pinion.DataService
 
         public DbSet<SapRequest> SapRequests { get; set; }
         public DbSet<SapRequestHistory> SapRequestHistories { get; set; }
+        public DbSet<SapConnectionSwitcher> SapConnectionSwitchers { get; set; }
     }
 }
